@@ -1,13 +1,24 @@
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'American Typewriter', serif;
     margin: 20px;
     padding: 20px;
     background-color: #f4f4f4;
-    text-align: center;
+    text-align: left;
 }
 
 h1 {
+    text-align: center;
     color: #333;
+}
+
+#center {
+    text-align: center;
+    color: #333;
+    font-size: 19px;
+}
+
+#categorie {
+    width: 200px;
 }
 
 p {
