@@ -1,0 +1,23 @@
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Historique</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <script src="script.js"></script>
+</head>
+
+<h1>Historique de vos dépenses :</h1>
+<label for="tri">Choisissez un ordre de tri :</label>
+<select id="tri" onchange="trierDepenses()">
+  <option value="date">Date</option>
+  <option value="montant">Montant</option>
+  <option value="categorie">Catégorie</option>
+</select>
+
+<!-- Affichage de l'historique des dépenses -->
+<ul id="listeDepenses">
+  <!-- Les dépenses seront affichées ici -->
+</ul>
+
+
