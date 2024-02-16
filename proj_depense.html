@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Gestionnaire de dépenses</title>
+  <link rel="stylesheet" href="style_main.css">
+  <script src="script.js"></script>
+</head>
+
+<body>
+  <h1>Gestionnaire de dépenses</h1>
+  
+  <p>Bienvenue sur le gestionnaire de dépenses. Vous pouvez ajouter une dépense : </p>
+  <label for="categorie">Choisissez une catégorie :</label>
+  <select id="categorie" name="categorie" required>
+    <option value="alimentation">Alimentation</option>
+    <option value="logement">Logement</option>
+    <option value="transport">Transport</option>
+    <option value="loisirs">Loisirs</option>
+    <option value="santé">Santé</option>
+    <option value="voyages">Voyages</option>
+    <option value="vêtements">Vêtements</option>
+    <option value="epargne">Epargne/Investissemnt</option>
+    <option value="autres">Autres</option>
+  </select><br>
+
+  <label for="montant">Donner un montant :</label>
+  <input type="number" id="montant" name="montant" step="0.01" min="0" required><br>
+
+  <label for="date">Donner une date :</label>
+  <input type="date" id="date" name="date" required><br>
+
+  <label for="description">Donner une description :</label>
+  <textarea id="description" name="description" rows="4" cols="50" ></textarea><br>
+
+  <button type="submit">Ajouter la dépense</button>
+  <br>
+  <h3>Historique des dépenses :</h3>
+  <label for="tri">Choisissez un ordre de tri :</label>
+  <select id="tri" onchange="trierDepenses()">
+    <option value="date">Date</option>
+    <option value="montant">Montant</option>
+    <option value="categorie">Catégorie</option>
+  </select>
+
+  <!-- Affichage de l'historique des dépenses -->
+  <ul id="listeDepenses">
+    <!-- Les dépenses seront affichées ici -->
+  </ul>
+
+
+  
+  
+</body>
+
+</html>
