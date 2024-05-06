@@ -3,10 +3,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <title>Ajout de dépenses</title>
-  <link href="style.css" rel="stylesheet" type="text/css" />
-  <script src="script.js"></script>
+  <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+  <script src="ajout.js"></script>
 </head>
-  <p>Vous pouvez ajouter une dépense : </p>
+
+<form id="formDepense">
+<h2>Vous pouvez ajouter une dépense : </h2>
 <label for="categorie">Choisissez une catégorie :</label>
 <select id="categorie" name="categorie" required>
   <option value="alimentation">Alimentation</option>
@@ -31,3 +33,6 @@
 
 <button type="submit">Ajouter la dépense</button>
 <br>
+</form>
+
+<a href="Historique.html">Voir votre historique</a>
