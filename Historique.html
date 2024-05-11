@@ -1,12 +1,13 @@
-
+<!DOCTYPE html>
+<html lang="fr">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <title>Historique</title>
   <link href="style.css" rel="stylesheet" type="text/css" media="screen"/>
-  <script src="historique.js"></script>
+  <script src="historique.js" defer></script>
 </head>
-
+<body>
 <h2>Historique de vos dépenses :</h2>
 <label for="tri">Choisissez un ordre de tri :</label>
 <select id="tri" onchange="trierDepenses()">
@@ -17,7 +18,14 @@
 
 <ul id="listeDepenses">
   <!-- Les dépenses seront affichées ici -->
-  <div id="formulaireModification"></div>
+  <?php
+    include 'afficherDepense.php'; // Ce script charge les dépenses de la base de données et les affiche
+    ?>
 </ul>
+<div id="formulaireModification">
+    <!-- Le formulaire de modification sera injecté ici par JavaScript -->
+</div>
 
-<a href="Ajout.html">Ajouter une dépense</a>
+<a href="Ajout.php">Ajouter une dépense</a>
+</body>
+</html>
