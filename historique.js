@@ -1,43 +1,47 @@
 document.addEventListener("DOMContentLoaded", function() {
-  let historiqueDepenses = JSON.parse(localStorage.getItem("historiqueDepenses")) || [];
+  fetch('getDepenses.php')  // Assurez-vous que cette URL est correcte
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Réponse réseau non OK');
+    }
+    return response.json();
+  })
+  .then(data => {
+    let listeDepenses = document.getElementById("listeDepenses");
+    listeDepenses.innerHTML = ''; // Nettoie la liste avant d'ajouter de nouveaux éléments
+    data.forEach(function(depense) {
+      let nouvelleDepense = document.createElement("li");
+      nouvelleDepense.textContent = `Catégorie: ${depense.categorie}, Montant: ${depense.montant}, Date: ${depense.date}, Description: ${depense.description}`;
+      nouvelleDepense.setAttribute("data-id", depense.id);
+      nouvelleDepense.setAttribute("data-categorie", depense.categorie);
+      nouvelleDepense.setAttribute("data-montant", depense.montant);
+      nouvelleDepense.setAttribute("data-date", depense.date);
+      nouvelleDepense.setAttribute("data-description", depense.description);
 
-  let listeDepenses = document.getElementById("listeDepenses");
-  historiqueDepenses.forEach(function(depense, index) {
-    let nouvelleDepense = document.createElement("li");
-    nouvelleDepense.textContent = `Catégorie: ${depense.categorie}, Montant: ${depense.montant}, Date: ${depense.date}, Description: ${depense.description}`;
-    nouvelleDepense.setAttribute("data-categorie", depense.categorie);
-    nouvelleDepense.setAttribute("data-montant", depense.montant);
-    nouvelleDepense.setAttribute("data-date", depense.date);
-    nouvelleDepense.setAttribute("data-description", depense.description);
+      // Ajouter un bouton "Modifier" pour chaque dépense
+      let boutonModifier = document.createElement("button");
+      boutonModifier.textContent = "Modifier";
+      boutonModifier.addEventListener("click", function() {
+        remplirFormulaireDepense(depense.id); // Appeler la fonction pour remplir le formulaire
+      });
 
-    // Ajouter un bouton "Modifier" pour chaque dépense
-    let boutonModifier = document.createElement("button");
-    boutonModifier.textContent = "Modifier";
-    boutonModifier.addEventListener("click", function() {
-      remplirFormulaireDepense(depense, index); // Appeler la fonction pour remplir le formulaire avec les valeurs de la dépense sélectionnée
+      // Ajouter un bouton "Supprimer" pour chaque dépense
+      let boutonSupprimer = document.createElement("button");
+      boutonSupprimer.textContent = "Supprimer";
+      boutonSupprimer.addEventListener("click", function() {
+        supprimerDepense(depense.id); // Utiliser depense.id pour la suppression
+      });
+
+      nouvelleDepense.appendChild(boutonModifier);
+      nouvelleDepense.appendChild(boutonSupprimer);
+      listeDepenses.appendChild(nouvelleDepense);
     });
-
-    // Ajouter un bouton "Supprimer" pour chaque dépense
-    let boutonSupprimer = document.createElement("button");
-    boutonSupprimer.textContent = "Supprimer";
-    boutonSupprimer.addEventListener("click", function() {
-      supprimerDepense(index); // Appeler la fonction pour supprimer la dépense sélectionnée
-    });
-
-    nouvelleDepense.appendChild(boutonModifier);
-    nouvelleDepense.appendChild(boutonSupprimer);
-    listeDepenses.appendChild(nouvelleDepense);
+  })
+  .catch(error => {
+    console.error('Erreur lors de la récupération des dépenses:', error);
+    alert('Erreur lors de la récupération des données');
   });
 });
-
-function supprimerDepense(index) {
-  let historiqueDepenses = JSON.parse(localStorage.getItem("historiqueDepenses")) || [];
-  historiqueDepenses.splice(index, 1); // Supprimer la dépense à l'index spécifié
-  localStorage.setItem("historiqueDepenses", JSON.stringify(historiqueDepenses)); // Mettre à jour le localStorage
-
-  // Rafraîchir la page pour refléter les modifications
-  location.reload();
-}
 
 function trierDepenses() {
   let critereTri = document.getElementById("tri").value;
@@ -66,12 +70,22 @@ document.getElementById("tri").addEventListener("change", function() {
   trierDepenses();
 });
 
-function remplirFormulaireDepense(depense, index) {
-  let formulaireModification = document.getElementById("formulaireModification");
-
-  // Créer et remplir le formulaire prérempli
-  formulaireModification.innerHTML = `
-    <form id="formModification">
+function remplirFormulaireDepense(depenseId) {
+  fetch(`getDepenses.php?id=${depenseId}`)  // Charger les détails de la dépense spécifique pour modification
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Réponse réseau non OK');
+    }
+    return response.json();
+  })
+  .then(depense => {
+    let formulaireModification = document.getElementById("formulaireModification");
+    if (!formulaireModification) {
+      console.error("Le formulaire de modification n'existe pas dans le DOM.");
+      return;
+    }
+    formulaireModification.innerHTML = 
+    `<form id="formModification">
       <h2>Modifier la dépense :</h2>
       <label for="categorie">Catégorie :</label>
       <select id="categorie" name="categorie" required>
@@ -82,10 +96,9 @@ function remplirFormulaireDepense(depense, index) {
         <option value="santé" ${depense.categorie === 'santé' ? 'selected' : ''}>Santé</option>
         <option value="voyages" ${depense.categorie === 'voyages' ? 'selected' : ''}>Voyages</option>
         <option value="vêtements" ${depense.categorie === 'vêtements' ? 'selected' : ''}>Vêtements</option>
-        <option value="epargne" ${depense.categorie === 'epargne' ? 'selected' : ''}>Epargne/Investissemnt</option>
+        <option value="epargne" ${depense.categorie === 'epargne' ? 'selected' : ''}>Épargne/Investissement</option>
         <option value="autres" ${depense.categorie === 'autres' ? 'selected' : ''}>Autres</option>
       </select><br>
-
       <label for="montant">Montant :</label>
       <input type="number" id="montantModification" value="${depense.montant}" step="0.01" min="0" required><br>
       <label for="date">Date :</label>
@@ -93,38 +106,69 @@ function remplirFormulaireDepense(depense, index) {
       <label for="description">Description :</label>
       <textarea id="descriptionModification" rows="4" cols="50" required>${depense.description}</textarea><br>
       <button type="submit">Modifier</button>
-    </form>
-  `;
-  
-  // Ajouter un gestionnaire d'événements pour le formulaire de modification
-  document.getElementById("formModification").addEventListener("submit", function(event) {
-    event.preventDefault(); // Empêcher le formulaire de se soumettre normalement
-    modifierDepense(index); // Appeler la fonction de modification avec l'index de la dépense
-  });
+    </form>`;
+
+    document.getElementById("formModification").addEventListener("submit", function(event) {
+      event.preventDefault();
+      modifierDepense(depenseId); // Modifier en utilisant l'ID
+    });
+  })
+  .catch(error => console.error('Erreur lors de la récupération des détails de la dépense:', error));
 }
 
-function modifierDepense(index) {
+
+function modifierDepense(depenseId) {
   // Récupérer les valeurs modifiées du formulaire de modification
   let categorieModification = document.getElementById("categorie").value;
   let montantModification = document.getElementById("montantModification").value;
   let dateModification = document.getElementById("dateModification").value;
   let descriptionModification = document.getElementById("descriptionModification").value;
 
-  // Récupérer les dépenses depuis le localStorage
-  let historiqueDepenses = JSON.parse(localStorage.getItem("historiqueDepenses")) || [];
+  let formData = new URLSearchParams();
+  formData.append('id', depenseId);
+  formData.append('categorie', categorieModification);
+  formData.append('montant', montantModification);
+  formData.append('date', dateModification);
+  formData.append('description', descriptionModification);
 
-  // Mettre à jour la dépense dans l'array des dépenses
-  historiqueDepenses[index] = {
-    categorie: categorieModification,
-    montant: montantModification,
-    date: dateModification,
-    description: descriptionModification
-  };
-
-  // Mettre à jour le localStorage avec les dépenses modifiées
-  localStorage.setItem("historiqueDepenses", JSON.stringify(historiqueDepenses));
-
-  // Rafraîchir la page pour refléter les modifications
-  location.reload();
+  fetch('modifDepense.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      alert("Dépense modifiée avec succès");
+      location.reload();  // Rafraîchir la page pour refléter les modifications
+    } else {
+      alert("Erreur lors de la modification de la dépense: " + data.message);
+    }
+  })
+  .catch(error => {
+    console.error('Erreur lors de l’envoi de la requête:', error);
+    alert('Erreur lors de la modification de la dépense');
+  });
 }
 
+function supprimerDepense(depenseId) {
+  fetch('suppDepense.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: `id=${depenseId}`
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      alert("Dépense supprimée avec succès");
+      document.querySelector(`li[data-id="${depenseId}"]`).remove(); // Assurez-vous que les éléments li ont un attribut data-id
+    } else {
+      alert("Erreur lors de la suppression de la dépense");
+    }
+  })
+  .catch(error => alert('Erreur: ' + error));
+}
