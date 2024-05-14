@@ -1,24 +1,25 @@
 <?php
-include 'connect.php'; // Votre script de connexion à la base de données
+session_start();
+include 'connect.php';
 
-// Vérifier si un ID a été fourni
-if (isset($_GET['id'])) {
-    $id = intval($_GET['id']);
-    $query = "SELECT * FROM depenses WHERE id = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $depense = $result->fetch_assoc();
-    echo json_encode($depense);
-} else {
-    $query = "SELECT * FROM depenses";
-    $result = $conn->query($query);
-    $depenses = [];
-    while ($row = $result->fetch_assoc()) {
-        $depenses[] = $row;
-    }
-    echo json_encode($depenses);
+if (!isset($_SESSION['user_id'])) {
+    echo json_encode(['error' => 'Accès non autorisé']);
+    exit;
 }
+
+$user_id = $_SESSION['user_id'];
+
+$query = "SELECT * FROM depenses WHERE user_id = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$depenses = [];
+while ($row = $result->fetch_assoc()) {
+    $depenses[] = $row;
+}
+echo json_encode($depenses);
+
 $conn->close();
+
 
