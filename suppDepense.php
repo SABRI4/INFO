@@ -1,25 +1,16 @@
 <?php
+session_start();
 include 'connect.php';
 
-header('Content-Type: application/json'); // Indiquer que la réponse est en JSON
+header('Content-Type: application/json');
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
     $id = $_POST['id'];
 
-    $sql = "DELETE FROM depenses WHERE id=?";
+    $sql = "DELETE FROM depenses WHERE id=? AND user_id=?";
     $stmt = $conn->prepare($sql);
-
-    if (false === $stmt) {
-        echo json_encode(['success' => false, 'message' => 'Erreur de préparation SQL.']);
-        exit;
-    }
-
-    $bind = $stmt->bind_param("i", $id);
-
-    if (false === $bind) {
-        echo json_encode(['success' => false, 'message' => 'Erreur de liaison des paramètres SQL.']);
-        exit;
-    }
+    $stmt->bind_param("ii", $id, $user_id);
 
     if ($stmt->execute()) {
         echo json_encode(['success' => true, 'message' => 'Dépense supprimée avec succès.']);
@@ -28,5 +19,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     $stmt->close();
-    $conn->close();
+} else {
+    echo json_encode(['success' => false, 'message' => 'Accès non autorisé.']);
 }
+$conn->close();
+
