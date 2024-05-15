@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Graphiques</title>
+  <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="Graphique.js"></script>
+</head>
+<body>
+  <h1>Graphiques</h1>
+  <h3>Quel est votre budget pour chacune de ces catégories ?</h3>
+  <form id="budgetForm">
+    <label for="alimentation">Alimentation :</label>
+    <input type="number" id="alimentation" name="alimentation" min="0" value="100"><br>
+
+    <label for="logement">Logement :</label>
+    <input type="number" id="logement" name="logement" min="0" value="100"><br>
+
+    <label for="transport">Transport :</label>
+    <input type="number" id="transport" name="transport" min="0" value="100"><br>
+
+    <label for="loisirs">Loisirs :</label>
+    <input type="number" id="loisirs" name="loisirs" min="0" value="100"><br>
+
+    <label for="sante">Santé :</label>
+    <input type="number" id="sante" name="sante" min="0" value="100"><br>
+
+    <label for="voyages">Voyages :</label>
+    <input type="number" id="voyages" name="voyages" min="0" value="100"><br>
+
+    <label for="vetements">Vêtements :</label>
+    <input type="number" id="vetements" name="vetements" min="0" value="100"><br>
+
+    <label for="epargne">Épargne/Investissement :</label>
+    <input type="number" id="epargne" name="epargne" min="0" value="100"><br>
+
+    <label for="autres">Autres :</label>
+    <input type="number" id="autres" name="autres" min="0" value="100"><br>
+
+    <button type="submit">Mettre à jour le budget</button>
+  </form>
+  <canvas id="graphiqueDepenses" width="400" height="400"></canvas>
+</body>
+</html>
