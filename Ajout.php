@@ -7,6 +7,31 @@
   <link href="style.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
+
+<header>
+        <div class="container">
+            <h1>Gestionnaire de dépenses</h1>
+            <nav>
+                <ul>
+                    <li><a href="Accueil.php">Accueil</a></li>
+                    <li><a href="Ajout.php">Ajout Dépense</a></li>
+                    <li><a href="Historique.php">Historique</a></li>
+                    <li><a href="Graphiques.php">Graphiques</a></li>
+                    <li>
+            <?php
+            session_start();
+            if (isset($_SESSION['user_id'])) {
+                echo '<a href="logout.php">Déconnexion</a>';
+            } else {
+                echo '<a href="connexion.html">Connexion</a> | <a href="compte.html">Inscription</a>';
+            }
+            ?>
+        </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+   
   <h1>Ajouter une dépense</h1>
   <form id="formDepense" action="ajouterDepense.php" method="post">
     <label for="categorie">Choisissez une catégorie :</label>
