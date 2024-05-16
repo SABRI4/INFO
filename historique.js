@@ -84,11 +84,20 @@ function remplirFormulaireDepense(depenseId) {
       console.error("Le formulaire de modification n'existe pas dans le DOM.");
       return;
     }
+    
+
+    // Vérification et initialisation des valeurs
+    let categorie = depense.categorie !== undefined ? depense.categorie : '';
+    let montant = depense.montant !== undefined ? depense.montant : '';
+    let date = depense.date !== undefined ? depense.date : '';
+    let description = depense.description !== undefined ? depense.description : '';
+
+
     formulaireModification.innerHTML = 
     `<form id="formModification">
       <h2>Modifier la dépense :</h2>
       <label for="categorie">Catégorie :</label>
-      <select id="categorie" name="categorie" required>
+      <select id="categorieModification" name="categorieModification" required>
         <option value="alimentation" ${depense.categorie === 'alimentation' ? 'selected' : ''}>Alimentation</option>
         <option value="logement" ${depense.categorie === 'logement' ? 'selected' : ''}>Logement</option>
         <option value="transport" ${depense.categorie === 'transport' ? 'selected' : ''}>Transport</option>
@@ -99,11 +108,11 @@ function remplirFormulaireDepense(depenseId) {
         <option value="epargne" ${depense.categorie === 'epargne' ? 'selected' : ''}>Épargne/Investissement</option>
         <option value="autres" ${depense.categorie === 'autres' ? 'selected' : ''}>Autres</option>
       </select><br>
-      <label for="montant">Montant :</label>
+      <label for="montantModification">Montant :</label>
       <input type="number" id="montantModification" value="${depense.montant}" step="0.01" min="0" required><br>
-      <label for="date">Date :</label>
+      <label for="dateModification">Date :</label>
       <input type="date" id="dateModification" value="${depense.date}" required><br>
-      <label for="description">Description :</label>
+      <label for="descriptionModification">Description :</label>
       <textarea id="descriptionModification" rows="4" cols="50" required>${depense.description}</textarea><br>
       <button type="submit">Modifier</button>
     </form>`;
@@ -119,7 +128,7 @@ function remplirFormulaireDepense(depenseId) {
 
 function modifierDepense(depenseId) {
   // Récupérer les valeurs modifiées du formulaire de modification
-  let categorieModification = document.getElementById("categorie").value;
+  let categorieModification = document.getElementById("categorieModification").value;
   let montantModification = document.getElementById("montantModification").value;
   let dateModification = document.getElementById("dateModification").value;
   let descriptionModification = document.getElementById("descriptionModification").value;
@@ -171,4 +180,19 @@ function supprimerDepense(depenseId) {
     }
   })
   .catch(error => alert('Erreur: ' + error));
+}
+
+function rechercherDepenses(termeRecherche) {
+  fetch(`rechercheDepenses.php?search=${encodeURIComponent(termeRecherche)}`)
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Réponse réseau non OK');
+    }
+    return response.json();
+  })
+  .then(data => {
+    // Afficher les résultats de la recherche dans votre interface utilisateur
+    afficherResultatsRecherche(data);
+  })
+  .catch(error => console.error('Erreur lors de la recherche de dépenses:', error));
 }
