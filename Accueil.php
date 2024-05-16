@@ -9,37 +9,35 @@
 </head>
 
 <body>
-    <header>
-        <div class="container">
-            <h1>Gestionnaire de dépenses</h1>
-            <nav>
-                <ul>
-                    <li><a href="Accueil.php">Accueil</a></li>
-                    <?php
-        session_start();
-        if (isset($_SESSION['user_id'])) {
-            echo '<li><a href="Ajout.php">Ajout Dépense</a></li><li><a href="Historique.php">Historique</a></li>
-            <li><a href="Graphiques.php">Graphiques</a></li>';
-        }
-        ?>
-                    
-                    <li>
-            <?php
-            
-            if (isset($_SESSION['user_id'])) {
-                echo '<a href="logout.php">Déconnexion</a>';
-            } else {
-                echo '<a href="connexion.html">Connexion</a> | <a href="compte.html">Inscription</a>';
-            }
-            ?>
-        </li>
+<header>
+    <div class="container">
+        <h1>Gestionnaire de dépenses</h1>
+        <nav>
+            <ul>
+                <li><a href="Accueil.php">Accueil</a></li>
+                <?php
+                session_start();
+                if (isset($_SESSION['user_id'])) {
+                    echo '<li><a href="Ajout.php">Ajout Dépense</a></li><li><a href="Historique.php">Historique</a></li>
+                    <li><a href="Graphiques.php">Graphiques</a></li>';
+                    echo '<li><a href="logout.php">Déconnexion</a></li>';
 
-                </ul>
-               
-            </nav>
-          
-        </div>
-    </header>
+                    // Afficher la photo de profil et le nom d'utilisateur
+                    echo '<li class="user-profile">';
+                    echo '<img src="' . $_SESSION['photo'] . '" alt="Photo de profil">';
+                    echo '<span class="username">' . $_SESSION['username'] . '</span>';
+                    echo '</li>';
+                }
+                else{
+                    echo '<li><a href="connexion.html">Connexion</a></li><li><a href="compte.html">Inscription</a></li>';
+                }
+                ?>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+
     <br>
     <br>
     <h2 id=center>Bienvenue sur le gestionnaire de dépenses</h2>
@@ -63,7 +61,7 @@
         <li>Adresse : 123 rue de la Gestion, 75000 Paris, France</li>
     </ul>
     <p>Ou utilisez le formulaire ci-dessous :</p>
-    <form method="contact.php" id="contactForm" method="post">
+    <form id="form" action="contact.php" method="post">
         <label for="nom">Nom :</label>
         <input type="text" id="nom" name="nom" required><br>
         <label for="email">Email :</label>
