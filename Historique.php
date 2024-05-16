@@ -40,6 +40,12 @@
   <option value="categorie">Catégorie</option>
 </select>
 
+<form action="recherche.php" method="post">
+  <label for="search">Rechercher une dépense :</label>
+  <input type="text" id="search" name="search">
+  <button type="submit">Rechercher</button>
+</form>
+
 <ul id="listeDepenses">
   <!-- Les dépenses seront affichées ici -->
   <?php
