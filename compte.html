@@ -8,13 +8,15 @@
 </head>
 <body>
     <h1>Créer un compte</h1>
-    <form action="signup.php" method="post">
+    <form id="form" action="signup.php" method="post" enctype="multipart/form-data">
         <label for="username">Nom d'utilisateur:</label><br>
         <input type="text" id="username" name="username" required><br>
         <label for="email">Email:</label><br>
         <input type="email" id="email" name="email" required><br>
         <label for="password">Mot de passe:</label><br>
         <input type="password" id="password" name="password" required><br>
+        <label for="photo">Photo de profil:</label><br>
+        <input type="file" id="photo" name="photo" accept="image/*"><br> 
         <button type="submit">S'inscrire</button>
     </form>
 </body>
