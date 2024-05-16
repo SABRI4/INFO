@@ -8,22 +8,31 @@
   <script src="historique.js" defer></script>
 </head>
 <body>
-<div>
-<?php
-    session_start();
-    // Vérifier si l'utilisateur est connecté
-    if (isset($_SESSION['user_id'])) {
-        // L'utilisateur est connecté, afficher le bouton de déconnexion
-        echo '<form action="logout.php" method="post">
-                  <button type="submit">Déconnexion</button>
-              </form>';
-    } else {
-        // L'utilisateur n'est pas connecté, afficher un lien vers la page de connexion
-        echo '<a href="connexion.html">Connexion</a>';
-    }
-    ?>
-</div>
-<h2>Historique de vos dépenses :</h2>
+<header>
+        <div class="container">
+            <h1>Gestionnaire de dépenses</h1>
+            <nav>
+                <ul>
+                    <li><a href="Accueil.php">Accueil</a></li>
+                    <li><a href="Ajout.php">Ajout Dépense</a></li>
+                    <li><a href="Historique.php">Historique</a></li>
+                    <li><a href="Graphiques.php">Graphiques</a></li>
+                    <li>
+            <?php
+            session_start();
+            if (isset($_SESSION['user_id'])) {
+                echo '<a href="logout.php">Déconnexion</a>';
+            } else {
+                echo '<a href="connexion.html">Connexion</a> | <a href="compte.html">Inscription</a>';
+            }
+            ?>
+        </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+<h1>Historique de vos dépenses :</h1>
 <label for="tri">Choisissez un ordre de tri :</label>
 <select id="tri" onchange="trierDepenses()">
   <option value="date">Date</option>
