@@ -9,28 +9,32 @@
 <body>
 
 <header>
-        <div class="container">
-            <h1>Gestionnaire de dépenses</h1>
-            <nav>
-                <ul>
-                    <li><a href="Accueil.php">Accueil</a></li>
-                    <li><a href="Ajout.php">Ajout Dépense</a></li>
-                    <li><a href="Historique.php">Historique</a></li>
-                    <li><a href="Graphiques.php">Graphiques</a></li>
-                    <li>
-            <?php
-            session_start();
-            if (isset($_SESSION['user_id'])) {
-                echo '<a href="logout.php">Déconnexion</a>';
-            } else {
-                echo '<a href="connexion.html">Connexion</a> | <a href="compte.html">Inscription</a>';
-            }
-            ?>
-        </li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    <div class="container">
+        <h1>Gestionnaire de dépenses</h1>
+        <nav>
+            <ul>
+                <li><a href="Accueil.php">Accueil</a></li>
+                <?php
+                session_start();
+                if (isset($_SESSION['user_id'])) {
+                    echo '<li><a href="Ajout.php">Ajout Dépense</a></li><li><a href="Historique.php">Historique</a></li>
+                    <li><a href="Graphiques.php">Graphiques</a></li>';
+                    echo '<li><a href="logout.php">Déconnexion</a></li>';
+
+                    // Afficher la photo de profil et le nom d'utilisateur
+                    echo '<li class="user-profile">';
+                    echo '<img src="' . $_SESSION['photo'] . '" alt="Photo de profil">';
+                    echo '<span class="username">' . $_SESSION['username'] . '</span>';
+                    echo '</li>';
+                }
+                else{
+                    echo '<li><a href="connexion.html">Connexion</a></li><li><a href="compte.html">Inscription</a></li>';
+                }
+                ?>
+            </ul>
+        </nav>
+    </div>
+</header>
    
   <h1>Ajouter une dépense</h1>
   <form id="formDepense" action="ajouterDepense.php" method="post">
@@ -58,6 +62,5 @@
 
     <button type="submit">Ajouter la dépense</button>
   </form>
-  <a href="Historique.php">Voir votre historique</a>
 </body>
 </html>
