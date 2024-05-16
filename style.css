@@ -1,14 +1,13 @@
 .container {
     max-width: 1200px;
     padding: 0 20px;
-    margin: 0px;
+    margin: 0px auto;
 }
 
 header {
     background-color: #5b5b5b;
     color: #fff;
     padding: 20px 0;
-    margin: 0px;
 }
 
 body {
@@ -44,17 +43,22 @@ nav ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
+    display: flex; 
+    align-items: center; 
 }
 
 nav ul li {
     display: inline;
-    margin-left: 0px;
+    margin-left: auto;
 }
 
 nav ul li:first-child {
     margin-left: 0;
 }
 
+nav ul li:last-child {
+    margin-left: auto; /* Fait pousser l'élément le plus à droite vers la droite */
+}
 nav ul li a {
     text-decoration: none;
     color: #fff;
@@ -110,7 +114,7 @@ select, input, textarea {
 }
 
 button {
-    background-color: skyblue;
+    background-color: rgb(228, 135, 235);
     color: white;
     padding: 10px 20px;
     font-size: 16px;
@@ -120,7 +124,7 @@ button {
 }
 
 button:hover {
-    background-color: cyan;
+    background-color: rgb(255, 0, 238);
 }
 
 h3 {
@@ -160,5 +164,27 @@ h2 {
 .recherche {
     padding: 10px;
     margin: 20px;
+}
+
+.username {
+    color: #d61aa7;
+    font-weight: bold;
+    margin-right: 10px; /* Ajouter un espace entre le nom d'utilisateur et la photo */
+}
+
+.user-profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #fff;
+    margin-left: 100px;
+    margin-right: 20px;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center; /* Alignement vertical */
+    margin-left: auto; /* Déplacer l'ensemble vers la droite */
 }
 
