@@ -7,21 +7,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $conn->real_escape_string($_POST['email']);
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-    $sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
-    $stmt = $conn->prepare($sql);
+    // Récupérer les informations sur la photo téléchargée
+    $photo_name = $_FILES["photo"]["name"];
+    $photo_tmp_name = $_FILES["photo"]["tmp_name"];
+    $photo_destination = "uploads/" . $photo_name;
 
-    if ($stmt) {
-        $stmt->bind_param("sss", $username, $email, $password);
-        if ($stmt->execute()) {
-            echo "Compte créé avec succès.";
-            header("Location: connexion.html"); // Redirige vers le formulaire de connexion
+    // Déplacer la photo téléchargée vers le dossier de destination
+    if (move_uploaded_file($photo_tmp_name, $photo_destination)) {
+        // Préparer et exécuter la requête d'insertion
+        $sql = "INSERT INTO users (username, email, password, photo) VALUES (?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+
+        if ($stmt) {
+            $stmt->bind_param("ssss", $username, $email, $password, $photo_destination);
+            if ($stmt->execute()) {
+                echo "Compte créé avec succès.";
+                header("Location: connexion.html"); // Rediriger vers le formulaire de connexion
+                exit(); // Terminer le script après la redirection
+            } else {
+                echo "Erreur: " . $stmt->error;
+            }
+            $stmt->close();
         } else {
-            echo "Erreur: " . $stmt->error;
+            echo "Erreur: " . $conn->error;
         }
-        $stmt->close();
     } else {
-        echo "Erreur: " . $conn->error;
+        echo "Une erreur s'est produite lors de l'enregistrement de la photo.";
     }
     $conn->close();
 }
-
+?>
