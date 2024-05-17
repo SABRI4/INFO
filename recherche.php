@@ -37,19 +37,24 @@
     </div>
 </header>
 
+
 <?php
-include 'connect.php'; 
+include 'connect.php';
 
 // Vérifiez si le formulaire de recherche a été soumis
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Récupérez le terme de recherche depuis le formulaire
     $searchTerm = mysqli_real_escape_string($conn, $_POST['search']); // Échapper les caractères spéciaux pour éviter les injections SQL
 
+    // ID de l'utilisateur connecté
+    $userId = $_SESSION['user_id'];
+
     // Utilisez le terme de recherche pour filtrer les données de la base de données
-    $query = "SELECT * FROM depenses WHERE categorie LIKE '%$searchTerm%' OR montant LIKE '%$searchTerm%' OR date LIKE '%$searchTerm%' OR description LIKE '%$searchTerm%'";
+    $query = "SELECT * FROM depenses WHERE user_id = '$userId' AND (categorie LIKE '%$searchTerm%' OR montant LIKE '%$searchTerm%' OR date LIKE '%$searchTerm%' OR description LIKE '%$searchTerm%')";
 } else {
-    // Si aucun terme de recherche n'est spécifié, récupérez toutes les données
-    $query = "SELECT * FROM depenses";
+    // Si aucun terme de recherche n'est spécifié, récupérez toutes les données de l'utilisateur connecté
+    $userId = $_SESSION['user_id'];
+    $query = "SELECT * FROM depenses WHERE user_id = '$userId'";
 }
 
 // Exécutez la requête SQL
