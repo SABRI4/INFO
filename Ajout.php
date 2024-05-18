@@ -20,12 +20,13 @@
                     echo '<li><a href="Ajout.php">Ajout Dépense</a></li><li><a href="Historique.php">Historique</a></li>
                     <li><a href="Graphiques.php">Graphiques</a></li>';
                     echo '<li><a href="logout.php">Déconnexion</a></li>';
-
+                    echo '<li><a href="profil.php">Modifier Profil</a></li>';
                     // Afficher la photo de profil et le nom d'utilisateur
                     echo '<li class="user-profile">';
                     echo '<img src="' . $_SESSION['photo'] . '" alt="Photo de profil">';
                     echo '<span class="username">' . $_SESSION['username'] . '</span>';
                     echo '</li>';
+                    echo '<div id="totalDepenses"><h2> |Total Dépenses: 0 <h2></div>';
                 }
                 else{
                     echo '<li><a href="connexion.html">Connexion</a></li><li><a href="compte.html">Inscription</a></li>';
@@ -62,5 +63,29 @@
 
     <button type="submit">Ajouter la dépense</button>
   </form>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  function updateTotalDepenses() {
+    fetch('total.php')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Réponse réseau non OK');
+        }
+        return response.text();
+      })
+      .then(data => {
+        document.getElementById('totalDepenses').textContent = `Total Dépenses: ${data}`;
+      })
+      .catch(error => {
+        console.error('Erreur lors de la récupération du total des dépenses:', error);
+      });
+  }
+
+  // Appeler updateTotalDepenses pour initialiser le total des dépenses au chargement de la page
+  updateTotalDepenses();
+});
+</script>
+
 </body>
 </html>
