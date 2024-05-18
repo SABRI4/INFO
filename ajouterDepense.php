@@ -40,8 +40,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    // Afficher les paramètres avant de les lier
-    var_dump($user_id, $categorie, $montant, $date, $description);
 
     // Lier les paramètres et exécuter la requête
     $stmt->bind_param("isdss", $user_id, $categorie, $montant, $date, $description);
