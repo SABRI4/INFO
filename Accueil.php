@@ -21,12 +21,14 @@
                     echo '<li><a href="Ajout.php">Ajout Dépense</a></li><li><a href="Historique.php">Historique</a></li>
                     <li><a href="Graphiques.php">Graphiques</a></li>';
                     echo '<li><a href="logout.php">Déconnexion</a></li>';
-
-                    // Afficher la photo de profil et le nom d'utilisateur
+                    echo '<li><a href="profil.php">Modifier Profil</a></li>';
+                    
+                    // Afficher la photo de profil et le nom d'utilisateur'
                     echo '<li class="user-profile">';
                     echo '<img src="' . $_SESSION['photo'] . '" alt="Photo de profil">';
                     echo '<span class="username">' . $_SESSION['username'] . '</span>';
                     echo '</li>';
+                    echo '<div id="totalDepenses"><h2> |Total Dépenses: 0 <h2></div>';
                 }
                 else{
                     echo '<li><a href="connexion.html">Connexion</a></li><li><a href="compte.html">Inscription</a></li>';
@@ -37,22 +39,22 @@
     </div>
 </header>
 
+<br>
+<br>
+<h2 id="center">Bienvenue sur le gestionnaire de dépenses</h2>
+<br>
+<br>
 
-    <br>
-    <br>
-    <h2 id=center>Bienvenue sur le gestionnaire de dépenses</h2>
-    <br>
-    <br>
-
-    <section class="about">
+<section class="about">
     <h2>À Propos de l'Application</h2>
     <p>Notre Gestionnaire de Dépenses est conçu pour vous aider à suivre et à gérer vos dépenses personnelles de manière simple et efficace. Avec des fonctionnalités telles que l'ajout de dépenses, la visualisation de l'historique et la création de graphiques, vous pouvez garder le contrôle total de vos finances.</p>
     <br>
     <h2>Utilisation</h2>
-    <p>Pour pouvoir profiter de notre application il faut tout d'abord vous créer un compte, "inscription" dans le menu. Ensuite vous allez pour rentrer vos dépenses et pouvoir voir votre historique et vos graphiques.</p>
-  </section>
+    <p>Pour pouvoir profiter de notre application il faut tout d'abord vous créer un compte, "inscription" dans le menu. Ensuite vous allez pouvoir rentrer vos dépenses et voir votre historique et vos graphiques.</p>
+</section>
 
-  <section class="contact">
+
+<section class="contact">
     <h2>Nous Contacter</h2>
     <p>Nous sommes là pour vous aider ! Si vous avez des questions, des commentaires ou des suggestions, n'hésitez pas à nous contacter.</p>
     <ul>
@@ -72,11 +74,27 @@
     </form>
 </section>
 
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  function updateTotalDepenses() {
+    fetch('total.php')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Réponse réseau non OK');
+        }
+        return response.text();
+      })
+      .then(data => {
+        document.getElementById('totalDepenses').textContent = `Total Dépenses: ${data}`;
+      })
+      .catch(error => {
+        console.error('Erreur lors de la récupération du total des dépenses:', error);
+      });
+  }
 
-
-
-
-
+  // Appeler updateTotalDepenses pour initialiser le total des dépenses au chargement de la page
+  updateTotalDepenses();
+});
+</script>
 </body>
-
 </html>
