@@ -1,6 +1,9 @@
 <?php
 session_start();
+require 'vendor/autoload.php'; // Inclure le chargeur automatique de Composer
 include 'connect.php';
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 // Vérifier si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
@@ -30,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $date = $conn->real_escape_string($_POST['date']);
     $description = $conn->real_escape_string($_POST['description']);
 
-    //Requete SQL
+    // Requete SQL
     $sql = "INSERT INTO depenses (user_id, categorie, montant, date, description) VALUES (?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
 
@@ -39,7 +42,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Erreur lors de la préparation de la requête : " . $conn->error;
         exit;
     }
-
 
     // Lier les paramètres et exécuter la requête
     $stmt->bind_param("isdss", $user_id, $categorie, $montant, $date, $description);
@@ -59,12 +61,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($user && $total_depenses > $user['budget']) {
             // Envoyer un email si le budget est dépassé
-            $to = $user['email'];
-            $subject = "Alerte Budget Dépassé";
-            $message = "Bonjour,\n\nVous avez dépassé votre budget de dépenses fixé à " . $user['budget'] . "€.\nVotre total actuel des dépenses est de " . $total_depenses . "€.\n\nCordialement,\nGestionnaire de Dépenses";
-            $headers = "From: contact@localhost";
+            $mail = new PHPMailer(true);
 
-            mail($to, $subject, $message, $headers);
+            try {
+                // Paramètres du serveur SMTP
+                $mail->isSMTP();
+                $mail->Host = 'smtp.gmail.com'; // Remplacez par votre hôte SMTP
+                $mail->SMTPAuth = true;
+                $mail->Username = 'comptedepense205@gmail.com'; // Remplacez par votre adresse email
+                $mail->Password = 'inwf odmx dywi rohj'; // Remplacez par votre mot de passe email
+                $mail->SMTPSecure = 'PHPMailer::ENCRYPTION_STARTTLS';
+                $mail->Port = 587;
+
+                // Destinataires
+                $mail->setFrom('comptedepense205@gmail.com', 'Gestionnaire de Dépenses');
+                $mail->addAddress($user['email']);
+
+                $mail->isHTML(false);
+                $mail->Subject = 'Alerte Budget Dépassé';
+                $mail->Body    = "Bonjour,\n\nVous avez dépassé votre budget de dépenses fixé à " . $user['budget'] . "€.\nVotre total actuel des dépenses est de " . $total_depenses . "€.\n\nCordialement,\nGestionnaire de Dépenses";
+
+                $mail->send();
+                echo 'Le message a été envoyé avec succès.';
+            } catch (Exception $e) {
+                echo "Le message n'a pas pu être envoyé. Mailer Error: {$mail->ErrorInfo}";
+            }
         }
 
         echo "Dépense ajoutée avec succès.";
