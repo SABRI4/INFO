@@ -62,8 +62,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($user && $total_depenses > $user['budget']) {
             // Envoyer un email si le budget est dépassé
             $mail = new PHPMailer(true);
-
+            $mail->CharSet = "UTF-8";
             try {
+
                 // Paramètres du serveur SMTP
                 $mail->isSMTP();
                 $mail->Host = 'smtp.gmail.com'; // Remplacez par votre hôte SMTP
