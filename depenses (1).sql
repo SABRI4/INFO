@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : ven. 17 mai 2024 à 10:59
+-- Généré le : mer. 22 mai 2024 à 15:25
 -- Version du serveur : 8.3.0
 -- Version de PHP : 8.2.18
 
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `depenses` (
   `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `depenses`
@@ -50,7 +50,12 @@ INSERT INTO `depenses` (`id`, `user_id`, `categorie`, `montant`, `date`, `descri
 (6, 1, 'alimentation', 15.00, '2024-05-03', 'mdco'),
 (22, 4, 'alimentation', 90.00, '2024-05-16', 'courses'),
 (23, 4, 'santé', 25.00, '2024-05-01', 'medecin'),
-(24, 4, 'epargne', 200.00, '2024-05-03', '');
+(24, 4, 'epargne', 200.00, '2024-05-03', ''),
+(39, 5, 'alimentation', 25.00, '2024-05-23', ''),
+(38, 5, 'alimentation', 25.00, '2024-05-23', ''),
+(36, 5, 'alimentation', 25.00, '2024-05-30', ''),
+(35, 5, 'alimentation', 2129.00, '2024-05-29', ''),
+(37, 5, 'alimentation', 30.00, '2024-05-16', '');
 
 -- --------------------------------------------------------
 
@@ -64,20 +69,22 @@ CREATE TABLE IF NOT EXISTS `users` (
   `username` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `photo` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `photo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `ACTIVE` tinyint(1) DEFAULT NULL,
+  `VIP` tinyint(1) DEFAULT NULL,
   `budget` int NOT NULL,
+  `role` enum('user','admin') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'user',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `password`, `email`, `photo`, `budget`) VALUES
-(1, 'sabri', '$2y$10$BcAmijfLGIJUYrQIuG5SAu8rDIYHVK1Zoyn4CgfYRiCWY8rTw7yxe', 'younesysabri@hotmail.fr', '', 0),
-(2, 'younes', '$2y$10$9Ww1xfdO/CHM.qy4ozZsf.fzLkqs7vTaknIp1AaxVx6KCqGRBiiFa', 'younesysabri53@gmail.com', '', 0),
-(4, 'Flavie', '$2y$10$5w5iDnKTUUWU1bj1JdKKdedoRajPcorJVc.qjsKpZSToP.ReJB4Je', 'flavie.cisse1@gmail.com', 'uploads/photo.png', 0);
+INSERT INTO `users` (`id`, `username`, `password`, `email`, `photo`, `ACTIVE`, `VIP`, `budget`, `role`) VALUES
+(5, 'Younes', '$2y$10$bNeUZxKhzrFwjhp.oxKkA.TInzixEaF4i/4Bw3ybh/wpY.VZyCHBy', 'younesysabri@hotmail.fr', 'uploads/images.jpg', 0, 0, 150, 'user'),
+(6, 'admin', '$2y$10$bNeUZxKhzrFwjhp.oxKkA.TInzixEaF4i/4Bw3ybh/wpY.VZyCHBy', 'admin@exemple.com', '', 1, 1, 0, 'admin');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
