@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestionnaire de dépenses</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 <header>
     <div class="container">
@@ -22,15 +20,19 @@
                     <li><a href="Graphiques.php">Graphiques</a></li>';
                     echo '<li><a href="logout.php">Déconnexion</a></li>';
                     echo '<li><a href="profil.php">Modifier Profil</a></li>';
+
+                    // Vérifier si l'utilisateur est un administrateur
+                    if ($_SESSION['role'] === 'admin') {
+                        echo '<li><a href="manage_users.php">Gérer Utilisateurs</a></li>';
+                    }
                     
-                    // Afficher la photo de profil et le nom d'utilisateur'
+                    // Afficher la photo de profil et le nom d'utilisateur
                     echo '<li class="user-profile">';
                     echo '<img src="' . $_SESSION['photo'] . '" alt="Photo de profil">';
                     echo '<span class="username">' . $_SESSION['username'] . '</span>';
                     echo '</li>';
-                    echo '<div id="totalDepenses"><h2> |Total Dépenses: 0 <h2></div>';
-                }
-                else{
+                    echo '<div id="totalDepenses"><h2> | Total Dépenses: 0 <h2></div>';
+                } else {
                     echo '<li><a href="connexion.html">Connexion</a></li><li><a href="compte.html">Inscription</a></li>';
                 }
                 ?>
@@ -52,7 +54,6 @@
     <h2>Utilisation</h2>
     <p>Pour pouvoir profiter de notre application il faut tout d'abord vous créer un compte, "inscription" dans le menu. Ensuite vous allez pouvoir rentrer vos dépenses et voir votre historique et vos graphiques.</p>
 </section>
-
 
 <section class="contact">
     <h2>Nous Contacter</h2>
