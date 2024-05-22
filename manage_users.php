@@ -47,7 +47,7 @@ $result = $conn->query($query);
                     <td><?php echo htmlspecialchars($user['role']); ?></td>
                     <td>
                         <a href="edit_user.php?id=<?php echo $user['id']; ?>">Modifier</a> |
-                        <a href="delete_user.php?id=<?php echo $user['id']; ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">Supprimer</a>
+                        <a href="delete_users.php?id=<?php echo $user['id']; ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">Supprimer</a>
                     </td>
                 </tr>
             <?php endwhile; ?>
