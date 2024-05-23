@@ -15,4 +15,3 @@ if ($result->num_rows > 0) {
     echo "<li>Pas de dépenses enregistrées</li>";
 }
 $conn->close();
-
