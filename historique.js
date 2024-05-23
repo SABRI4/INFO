@@ -71,6 +71,7 @@ document.getElementById("tri").addEventListener("change", function() {
 });
 
 
+
 function remplirFormulaireDepense(depenseId) {
   fetch(`getDepenses.php?id=${depenseId}`)
     .then(response => {
