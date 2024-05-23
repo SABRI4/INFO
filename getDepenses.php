@@ -9,6 +9,9 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 $depense_id = isset($_GET['id']) ? $_GET['id'] : null;
+$mois = isset($_GET['month']) ? $_GET['month'] : null;
+$annee = date('Y');
+
 
 try {
     if ($depense_id) {
@@ -16,7 +19,13 @@ try {
         $query = "SELECT * FROM depenses WHERE user_id = ? AND id = ?";
         $stmt = $conn->prepare($query);
         $stmt->bind_param("ii", $user_id, $depense_id);
-    } else {
+    } 
+    if(isset($mois)){
+        $query  = 'SELECT * FROM depenses WHERE user_id = ? AND DATE_FORMAT($annee $mois, '%Y-%m') = ?'
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("i", $user_id);
+        }
+    else {
         // Requête pour toutes les dépenses de l'utilisateur
         $query = "SELECT * FROM depenses WHERE user_id = ?";
         $stmt = $conn->prepare($query);
