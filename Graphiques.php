@@ -45,12 +45,14 @@ if (!isset($_SESSION['user_id'])) {
     <label for="autres">Autres :</label>
     <input type="number" id="autres" name="autres" min="0" value="100"><br>
 
+    <label for="mois">Mois :</label>
+    <input type="month" id="mois" name="mois" required><br>
+
     <button type="submit">Mettre à jour le budget</button>
   </form>
   <canvas id="graphiqueDepenses" width="400" height="400"></canvas>
   <script>
   document.addEventListener("DOMContentLoaded", function() {
-    // Récupérer les éléments du formulaire et le canvas
     let budgetForm = document.getElementById("budgetForm");
     let canvas = document.getElementById("graphiqueDepenses");
     let ctx = canvas.getContext("2d");
@@ -61,7 +63,6 @@ if (!isset($_SESSION['user_id'])) {
 
     let depenses = categories.map(function() { return 0; });
 
-    // Créer le graphique initial avec les données des dépenses et les budgets par défaut
     let graphique = new Chart(ctx, {
         type: "bar",
         data: {
@@ -92,46 +93,55 @@ if (!isset($_SESSION['user_id'])) {
         }
     });
 
-    // Récupérer les données des dépenses depuis le serveur
-    fetch('getDepenses_2.php')
-      .then(response => {
-        if (!response.ok) {
-            throw new Error('Réponse réseau non OK');
-        }
-        return response.json();
-      })
-      .then(data => {
-          console.log('Données reçues:', data); // Ajoutez ceci pour voir les données renvoyées
-          if (data.success) {
-              categories.forEach(function(categorie, index) {
-                  if (data.depenses[categorie]) {
-                      console.log(`Dépense pour ${categorie}: ${data.depenses[categorie]}`); // Log chaque dépense
-                      graphique.data.datasets[0].data[index] = parseFloat(data.depenses[categorie]);
-                  }
-              });
-              graphique.update();
-          } else {
-              console.error('Erreur lors de la récupération des dépenses:', data.message);
-          }
-      })
-      .catch(error => {
-          console.error('Erreur lors de la récupération des dépenses:', error);
-      });
+    function updateGraph(month) {
+        fetch(`getDepenses_2.php?mois=${month}`)
+          .then(response => {
+            if (!response.ok) {
+                throw new Error('Réponse réseau non OK');
+            }
+            return response.json();
+          })
+          .then(data => {
+              console.log('Données reçues:', data);
+              if (data.success) {
+                  categories.forEach(function(categorie, index) {
+                      if (data.depenses[categorie]) {
+                          console.log(`Dépense pour ${categorie}: ${data.depenses[categorie]}`);
+                          graphique.data.datasets[0].data[index] = parseFloat(data.depenses[categorie]);
+                      } else {
+                          graphique.data.datasets[0].data[index] = 0;
+                      }
+                  });
+                  graphique.update();
+              } else {
+                  console.error('Erreur lors de la récupération des dépenses:', data.message);
+              }
+          })
+          .catch(error => {
+              console.error('Erreur lors de la récupération des dépenses:', error);
+          });
+    }
 
     // Ajouter un gestionnaire d'événements pour soumettre le formulaire
     budgetForm.addEventListener("submit", function(event) {
-        event.preventDefault(); 
+        event.preventDefault();
 
-        categories.forEach(function(categorie, index) {
-            let inputElement = document.getElementById(categorie);
-            if (inputElement) {
-                let budgetCategorie = parseInt(inputElement.value);
-                graphique.data.datasets[1].data[index] = budgetCategorie;
-            }
-        });
+        let month = document.getElementById("mois").value;
+        if (month) {
+            updateGraph(month);
 
-        
-        graphique.update();
+            categories.forEach(function(categorie, index) {
+                let inputElement = document.getElementById(categorie);
+                if (inputElement) {
+                    let budgetCategorie = parseInt(inputElement.value);
+                    graphique.data.datasets[1].data[index] = budgetCategorie;
+                }
+            });
+
+            graphique.update();
+        } else {
+            alert("Veuillez sélectionner un mois.");
+        }
     });
 });
   </script>

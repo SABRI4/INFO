@@ -63,21 +63,29 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-  function updateTotalDepenses() {
-    fetch('total.php')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Réponse réseau non OK');
-        }
-        return response.text();
-      })
-      .then(data => {
-        document.getElementById('totalDepenses').textContent = `Total Dépenses: ${data}`;
-      })
-      .catch(error => {
-        console.error('Erreur lors de la récupération du total des dépenses:', error);
-      });
-  }
+    function getCurrentMonthYear() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth() + 1; // Les mois commencent à 0
+        return `${year}-${month.toString().padStart(2, '0')}`;
+    }
+
+    function updateTotalDepenses() {
+        fetch('total.php')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Réponse réseau non OK');
+                }
+                return response.text();
+            })
+            .then(data => {
+                const currentMonthYear = getCurrentMonthYear();
+                document.getElementById('totalDepenses').innerHTML = `Total Dépenses du mois de ${currentMonthYear}: ${data}`;
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération du total des dépenses:', error);
+            });
+    }
 
   // Appeler updateTotalDepenses pour initialiser le total des dépenses au chargement de la page
   updateTotalDepenses();
