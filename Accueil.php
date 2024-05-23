@@ -25,7 +25,7 @@
                     if ($_SESSION['role'] === 'admin') {
                         echo '<li><a href="manage_users.php">Gérer Utilisateurs</a></li>';
                     }
-                    
+
                     // Afficher la photo de profil et le nom d'utilisateur
                     echo '<li class="user-profile">';
                     echo '<img src="' . $_SESSION['photo'] . '" alt="Photo de profil">';
@@ -40,6 +40,16 @@
         </nav>
     </div>
 </header>
+
+<?php if (isset($_SESSION['user_id'])) : ?>
+    <div class="changecouleur">
+        <form id="colorForm" action="savecouleur.php" method="post">
+            <label for="colorpicker">Choisissez une couleur pour les titres :</label>
+            <input type="color" id="colorpicker" name="couleur" value="#0c1b8c">
+            <button type="submit">Appliquer</button>
+        </form>
+    </div>
+<?php endif; ?>
 
 <br>
 <br>
@@ -75,26 +85,27 @@
     </form>
 </section>
 
+<script src="couleur.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-  function updateTotalDepenses() {
-    fetch('total.php')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Réponse réseau non OK');
-        }
-        return response.text();
-      })
-      .then(data => {
-        document.getElementById('totalDepenses').textContent = `Total Dépenses: ${data}`;
-      })
-      .catch(error => {
-        console.error('Erreur lors de la récupération du total des dépenses:', error);
-      });
-  }
+    function updateTotalDepenses() {
+        fetch('total.php')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Réponse réseau non OK');
+                }
+                return response.text();
+            })
+            .then(data => {
+                document.getElementById('totalDepenses').textContent = `Total Dépenses: ${data}`;
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération du total des dépenses:', error);
+            });
+    }
 
-  // Appeler updateTotalDepenses pour initialiser le total des dépenses au chargement de la page
-  updateTotalDepenses();
+    // Appeler updateTotalDepenses pour initialiser le total des dépenses au chargement de la page
+    updateTotalDepenses();
 });
 </script>
 </body>
