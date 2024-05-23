@@ -60,6 +60,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['user_id'])) {
                 $mail->SMTPSecure = 'PHPMailer::ENCRYPTION_STARTTLS';
                 $mail->Port = 587;
 
+                # ENCODAGE UTF8
+                $mail->CharSet = 'UTF-8';
                 // Destinataires
                 $mail->setFrom('comptedepense205@gmail.com', 'Gestionnaire de Dépenses');
                 $mail->addAddress($user['email']);

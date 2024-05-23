@@ -34,4 +34,3 @@ echo json_encode(['success' => true, 'depenses' => $depenses]);
 
 $stmt->close();
 $conn->close();
-?>
