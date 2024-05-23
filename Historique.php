@@ -17,8 +17,10 @@
                 <?php
                 session_start();
                 if (isset($_SESSION['user_id'])) {
-                    echo '<li><a href="Ajout.php">Ajout Dépense</a></li><li><a href="Historique.php">Historique</a></li>
-                    <li><a href="Graphiques.php">Graphiques</a></li>';
+                    echo '<li><a href="Ajout.php">Ajout Dépense</a></li><li><a href="Historique.php">Historique</a></li>';
+                    if ($_SESSION['role'] === 'admin' || $_SESSION['VIP'] == 1) {
+                        echo '<li><a href="Graphiques.php">Graphiques</a></li>';
+                    }
                     echo '<li><a href="logout.php">Déconnexion</a></li>';
                     echo '<li><a href="profil.php">Modifier Profil</a></li>';
                     // Afficher la photo de profil et le nom d'utilisateur

@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `photo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `ACTIVE` tinyint(1) DEFAULT NULL,
-  `VIP` tinyint(1) DEFAULT NULL,
+  `VIP` boolean DEFAULT 0,
   `budget` int NOT NULL,
   `role` enum('user','admin') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'user',
   PRIMARY KEY (`id`),

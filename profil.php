@@ -66,11 +66,15 @@ $conn->close();
         <h1>Modifier Profil</h1>
         <nav>
             <ul>
-                <li><a href="Accueil.php">Accueil</a></li>
-                <li><a href="Ajout.php">Ajout Dépense</a></li>
-                <li><a href="Historique.php">Historique</a></li>
-                <li><a href="Graphiques.php">Graphiques</a></li>
-                <li><a href="logout.php">Déconnexion</a></li>
+                <?php
+                echo '<li><a href="Accueil.php">Accueil</a></li>';
+                echo '<li><a href="Ajout.php">Ajout Dépense</a></li>';
+                echo '<li><a href="Historique.php">Historique</a></li>';
+                if ($_SESSION['VIP'] == 1) {
+                    echo '<li><a href="Graphiques.php">Graphiques</a></li>';
+                }
+                echo '<li><a href="logout.php">Déconnexion</a></li>';
+                ?>
             </ul>
         </nav>
     </div>

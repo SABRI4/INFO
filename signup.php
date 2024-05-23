@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Préparer et exécuter la requête d'insertion
-    $sql = "INSERT INTO users (username, email, password, photo, budget, ACTIVE) VALUES (?, ?, ?, ?, ?, 1)";
+    $sql = "INSERT INTO users (username, email, password, photo, budget, ACTIVE, VIP) VALUES (?, ?, ?, ?, ?, 1, 0)";
     $stmt = $conn->prepare($sql);
 
     if ($stmt) {

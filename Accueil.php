@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header('Location: connexion.html');
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -14,10 +21,9 @@
             <ul>
                 <li><a href="Accueil.php">Accueil</a></li>
                 <?php
-                session_start();
                 if (isset($_SESSION['user_id'])) {
                     echo '<li><a href="Ajout.php">Ajout Dépense</a></li><li><a href="Historique.php">Historique</a></li>';
-                    if ($_SESSION['VIP'] === '1') {
+                    if ($_SESSION['VIP'] == 1) {
                         echo '<li><a href="Graphiques.php">Graphiques</a></li>';
                     }
                     echo '<li><a href="logout.php">Déconnexion</a></li>';
@@ -33,7 +39,14 @@
                     echo '<img src="' . $_SESSION['photo'] . '" alt="Photo de profil">';
                     echo '<span class="username">' . $_SESSION['username'] . '</span>';
                     echo '</li>';
-                    echo '<div id="totalDepenses"><h2> | Total Dépenses: 0 <h2></div>';
+                    echo '<div id="totalDepenses"><h2> | Total Dépenses: 0 </h2></div>';
+
+                    // Formulaire pour devenir VIP
+                    if ($_SESSION['VIP'] != 1) {
+                        echo '<form id="vipForm" action="become_vip.php" method="post">';
+                        echo '<button type="submit">Devenir VIP</button>';
+                        echo '</form>';
+                    }
                 } else {
                     echo '<li><a href="connexion.html">Connexion</a></li><li><a href="compte.html">Inscription</a></li>';
                 }
@@ -64,7 +77,7 @@
     <p>Notre Gestionnaire de Dépenses est conçu pour vous aider à suivre et à gérer vos dépenses personnelles de manière simple et efficace. Avec des fonctionnalités telles que l'ajout de dépenses, la visualisation de l'historique et la création de graphiques, vous pouvez garder le contrôle total de vos finances.</p>
     <br>
     <h2>Utilisation</h2>
-    <p>Pour pouvoir profiter de notre application il faut tout d'abord vous créer un compte, "inscription" dans le menu. Ensuite vous allez pouvoir rentrer vos dépenses et voir votre historique et vos graphiques.</p>
+    <p>Pour pouvoir profiter de notre application, il faut tout d'abord vous créer un compte en cliquant sur "Inscription" dans le menu. Ensuite, vous allez pouvoir rentrer vos dépenses et voir votre historique et vos graphiques.</p>
 </section>
 
 <section class="contact">
@@ -116,6 +129,27 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Appeler updateTotalDepenses pour initialiser le total des dépenses au chargement de la page
     updateTotalDepenses();
+
+    // Ajouter un événement pour gérer le formulaire VIP
+    document.getElementById('vipForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        fetch('become_vip.php', {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Vous êtes maintenant VIP!');
+                location.reload(); // Recharger la page pour mettre à jour l'affichage
+            } else {
+                alert('Erreur : ' + data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Erreur lors de la requête:', error);
+            alert('Erreur lors de la requête');
+        });
+    });
 });
 </script>
 </body>
