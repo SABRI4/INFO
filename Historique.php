@@ -1,13 +1,3 @@
-
-Conversation ouverte. 1 message non lu.
-
-Aller au contenu
-Utiliser Gmail avec un lecteur d'écran
-Conversations
-5,15 Go utilisés sur 15 Go
-Conditions d'utilisation · Confidentialité · Règlement du programme
-Dernière activité sur le compte : il y a 0 minute
-Détails
 <!DOCTYPE html>
 <html lang="fr">
 <head>
