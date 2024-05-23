@@ -70,59 +70,64 @@ document.getElementById("tri").addEventListener("change", function() {
   trierDepenses();
 });
 
+
 function remplirFormulaireDepense(depenseId) {
-  fetch(`getDepenses.php?id=${depenseId}`)  // Charger les détails de la dépense spécifique pour modification
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Réponse réseau non OK');
-    }
-    return response.json();
-  })
-  .then(depense => {
-    let formulaireModification = document.getElementById("formulaireModification");
-    if (!formulaireModification) {
-      console.error("Le formulaire de modification n'existe pas dans le DOM.");
-      return;
-    }
-    
+  fetch(`getDepenses.php?id=${depenseId}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Réponse réseau non OK');
+      }
+      return response.json();
+    })
+    .then(depense => {
+      if (depense.error) {
+        console.error(depense.error);
+        return;
+      }
 
-    // Vérification et initialisation des valeurs
-    let categorie = depense.categorie !== undefined ? depense.categorie : '';
-    let montant = depense.montant !== undefined ? depense.montant : '';
-    let date = depense.date !== undefined ? depense.date : '';
-    let description = depense.description !== undefined ? depense.description : '';
+      if (depense.length === 0) {
+        console.error('Aucune dépense trouvée avec cet ID.');
+        return;
+      }
 
+      let formulaireModification = document.getElementById("formulaireModification");
+      if (!formulaireModification) {
+        console.error("Le formulaire de modification n'existe pas dans le DOM.");
+        return;
+      }
 
-    formulaireModification.innerHTML = 
-    `<form id="formModification">
-      <h2>Modifier la dépense :</h2>
-      <label for="categorie">Catégorie :</label>
-      <select id="categorieModification" name="categorieModification" required>
-        <option value="alimentation" ${depense.categorie === 'alimentation' ? 'selected' : ''}>Alimentation</option>
-        <option value="logement" ${depense.categorie === 'logement' ? 'selected' : ''}>Logement</option>
-        <option value="transport" ${depense.categorie === 'transport' ? 'selected' : ''}>Transport</option>
-        <option value="loisirs" ${depense.categorie === 'loisirs' ? 'selected' : ''}>Loisirs</option>
-        <option value="santé" ${depense.categorie === 'santé' ? 'selected' : ''}>Santé</option>
-        <option value="voyages" ${depense.categorie === 'voyages' ? 'selected' : ''}>Voyages</option>
-        <option value="vêtements" ${depense.categorie === 'vêtements' ? 'selected' : ''}>Vêtements</option>
-        <option value="epargne" ${depense.categorie === 'epargne' ? 'selected' : ''}>Épargne/Investissement</option>
-        <option value="autres" ${depense.categorie === 'autres' ? 'selected' : ''}>Autres</option>
-      </select><br>
-      <label for="montantModification">Montant :</label>
-      <input type="number" id="montantModification" value="${depense.montant}" step="0.01" min="0" required><br>
-      <label for="dateModification">Date :</label>
-      <input type="date" id="dateModification" value="${depense.date}" required><br>
-      <label for="descriptionModification">Description :</label>
-      <textarea id="descriptionModification" rows="4" cols="50" required>${depense.description}</textarea><br>
-      <button type="submit">Modifier</button>
-    </form>`;
+      // Préremplir le formulaire avec les données de la dépense
+      formulaireModification.innerHTML = `
+        <form id="formModification">
+          <h2>Modifier la dépense :</h2>
+          <input type="hidden" id="depenseId" value="${depense[0].id}" />
+          <label for="categorieModification">Catégorie :</label>
+          <select id="categorieModification" name="categorieModification" required>
+            <option value="alimentation" ${depense[0].categorie === 'alimentation' ? 'selected' : ''}>Alimentation</option>
+            <option value="logement" ${depense[0].categorie === 'logement' ? 'selected' : ''}>Logement</option>
+            <option value="transport" ${depense[0].categorie === 'transport' ? 'selected' : ''}>Transport</option>
+            <option value="loisirs" ${depense[0].categorie === 'loisirs' ? 'selected' : ''}>Loisirs</option>
+            <option value="santé" ${depense[0].categorie === 'santé' ? 'selected' : ''}>Santé</option>
+            <option value="voyages" ${depense[0].categorie === 'voyages' ? 'selected' : ''}>Voyages</option>
+            <option value="vêtements" ${depense[0].categorie === 'vêtements' ? 'selected' : ''}>Vêtements</option>
+            <option value="epargne" ${depense[0].categorie === 'epargne' ? 'selected' : ''}>Épargne/Investissement</option>
+            <option value="autres" ${depense[0].categorie === 'autres' ? 'selected' : ''}>Autres</option>
+          </select><br>
+          <label for="montantModification">Montant :</label>
+          <input type="number" id="montantModification" name="montantModification" value="${depense[0].montant}" step="0.01" min="0" required><br>
+          <label for="dateModification">Date :</label>
+          <input type="date" id="dateModification" name="dateModification" value="${depense[0].date}" required><br>
+          <label for="descriptionModification">Description :</label>
+          <textarea id="descriptionModification" name="descriptionModification" rows="4" cols="50" required>${depense[0].description}</textarea><br>
+          <button type="submit">Modifier</button>
+        </form>`;
 
-    document.getElementById("formModification").addEventListener("submit", function(event) {
-      event.preventDefault();
-      modifierDepense(depenseId); // Modifier en utilisant l'ID
-    });
-  })
-  .catch(error => console.error('Erreur lors de la récupération des détails de la dépense:', error));
+      document.getElementById("formModification").addEventListener("submit", function(event) {
+        event.preventDefault();
+        modifierDepense(depenseId); // Modifier en utilisant l'ID
+      });
+    })
+    .catch(error => console.error('Erreur lors de la récupération des détails de la dépense:', error));
 }
 
 
@@ -161,6 +166,7 @@ function modifierDepense(depenseId) {
     alert('Erreur lors de la modification de la dépense');
   });
 }
+
 
 function supprimerDepense(depenseId) {
   fetch('suppDepense.php', {
