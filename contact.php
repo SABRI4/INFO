@@ -14,7 +14,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['user_id'])) {
 
     // Récupérez les informations de l'utilisateur connecté
     $nom = $_SESSION['username'];
-    $email = $_SESSION['email'];  // Assurez-vous que l'email de l'utilisateur est stocké dans la session
+    $email = $_SESSION['email'] ?? '';  // Vérifiez si l'email est défini
+
+    if (empty($email)) {
+        $response = ['success' => false, 'message' => "L'email de l'utilisateur n'est pas défini ou n'existe pas."];
+        echo json_encode($response);
+        exit;
+    }
 
     $mail = new PHPMailer(true);
     try {
@@ -32,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['user_id'])) {
         
         // Destinataires
         $mail->setFrom($email, $nom);
-        $mail->addAddress('comptedepense205@gmail.com'); // Adresse de destination
+        $mail->addAddress('contact@gestionnairededepenses.com'); // Adresse de destination
         
         // Contenu de l'email
         $mail->isHTML(false);
