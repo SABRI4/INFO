@@ -52,4 +52,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['user_id'])) {
 
 echo json_encode($response);
 
-?>

@@ -137,7 +137,7 @@ function modifierDepense(depenseId) {
   const formData = new FormData(form);
   formData.append('id', depenseId);
 
-  fetch('modifierDepense.php', {
+  fetch('modifDepense.php', {
       method: 'POST',
       body: formData
   })
