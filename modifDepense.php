@@ -23,13 +23,21 @@ function calculerTotalDepenses($user_id, $conn) {
     }
 }
 
+$response = [];
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
-    $id = $_POST['id'];
-    $categorie = $_POST['categorie'];
-    $montant = $_POST['montant'];
-    $date = $_POST['date'];
-    $description = $_POST['description'];
+    $id = $_POST['id'] ?? null;
+    $categorie = $_POST['categorie'] ?? null;
+    $montant = $_POST['montant'] ?? null;
+    $date = $_POST['date'] ?? null;
+    $description = $_POST['description'] ?? null;
+
+    if (!$id || !$categorie || !$montant || !$date || !$description) {
+        $response = ['success' => false, 'message' => 'Des données sont manquantes.'];
+        echo json_encode($response);
+        exit;
+    }
 
     $sql = "UPDATE depenses SET categorie=?, montant=?, date=?, description=? WHERE id=? AND user_id=?";
     $stmt = $conn->prepare($sql);
@@ -60,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['user_id'])) {
                 $mail->SMTPAuth = true;
                 $mail->Username = 'comptedepense205@gmail.com'; // Remplacez par votre adresse email
                 $mail->Password = 'inwf odmx dywi rohj'; // Remplacez par votre mot de passe email
-                $mail->SMTPSecure = 'PHPMailer::ENCRYPTION_STARTTLS';
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                 $mail->Port = 587;
 
                 // ENCODAGE UTF8
@@ -91,7 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['user_id'])) {
                 $mail->SMTPAuth = true;
                 $mail->Username = 'comptedepense205@gmail.com'; // Remplacez par votre adresse email
                 $mail->Password = 'inwf odmx dywi rohj'; // Remplacez par votre mot de passe email
-                $mail->SMTPSecure = 'PHPMailer::ENCRYPTION_STARTTLS';
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                 $mail->Port = 587;
 
                 // ENCODAGE UTF8
@@ -111,14 +119,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['user_id'])) {
             }
         }
 
-        echo json_encode(['success' => true, 'message' => 'Dépense modifiée avec succès.', 'emailMessages' => $messages]);
+        $response = ['success' => true, 'message' => 'Dépense modifiée avec succès.', 'redirect' => 'Historique.php', 'emailMessages' => $messages];
     } else {
-        echo json_encode(['success' => false, 'message' => 'Erreur lors de la modification de la dépense.']);
+        $response = ['success' => false, 'message' => 'Erreur lors de la modification de la dépense.'];
     }
 
     $stmt->close();
 } else {
-    error_log("Accès non autorisé ou méthode incorrecte. Méthode: {$_SERVER["REQUEST_METHOD"]}, User ID: {$_SESSION['user_id']}");
-    echo json_encode(['success' => false, 'message' => 'Accès non autorisé.']);
+    $response = ['success' => false, 'message' => 'Accès non autorisé.'];
 }
+
+echo json_encode($response);
 $conn->close();
