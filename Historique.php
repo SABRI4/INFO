@@ -41,34 +41,12 @@
 
 <h1>Historique de vos dépenses :</h1>
 <label id="form" for="tri">Choisissez un ordre de tri :</label>
-<select id="form" id="tri" onchange="trierDepenses()">
+<select class ="form" id="tri" onchange="trierDepenses()">
   <option value="date">Date</option>
   <option value="montant">Montant</option>
   <option value="categorie">Catégorie</option>
 </select>
 
-<!-- Bouton  -->
-
-<label id="form" for="mois">Choisissez quel mois : </label>
-<form method="get" action="getDepenses.php">
-        <label for="month">Choisissez un mois :</label>
-        <select id="month" name="month">
-            <option value="01">Janvier</option>
-            <option value="02">Février</option>
-            <option value="03">Mars</option>
-            <option value="04">Avril</option>
-            <option value="05">Mai</option>
-            <option value="06">Juin</option>
-            <option value="07">Juillet</option>
-            <option value="08">Août</option>
-            <option value="09">Septembre</option>
-            <option value="10">Octobre</option>
-            <option value="11">Novembre</option>
-            <option value="12">Décembre</option>
-            <option value='0'>Tout voir</option>
-        </select>
-        <input type="submit" value="Afficher">
-</form>
 
 <form id="form" action="recherche.php" method="post">
   <label for="search">Rechercher une dépense :</label>
