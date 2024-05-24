@@ -6,6 +6,7 @@
   <title>Historique</title>
   <link href="style.css" rel="stylesheet" type="text/css" media="screen"/>
   <script src="historique.js" defer></script>
+  <script src="couleur.js"></script>
 </head>
 <body>
 <header>
