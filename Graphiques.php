@@ -22,7 +22,6 @@ if (!isset($_SESSION['user_id'])) {
             <ul>
                 <li><a href="Accueil.php">Accueil</a></li>
                 <?php
-                session_start();
                 if (isset($_SESSION['user_id'])) {
                     echo '<li><a href="Ajout.php">Ajout Dépense</a></li><li><a href="Historique.php">Historique</a></li>';
                     if ($_SESSION['VIP'] == 1) {
