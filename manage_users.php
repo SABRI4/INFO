@@ -33,6 +33,7 @@ $result = $conn->query($query);
                     if ($_SESSION['VIP'] == 1) {
                         echo '<li><a href="Graphiques.php">Graphiques</a></li>';
                     }
+                    echo '<li><a href="centre_aide.php"> "Centre d aide"</a></li>';
                     echo '<li><a href="logout.php">Déconnexion</a></li>';
                     echo '<li><a href="profil.php">Modifier Profil</a></li>';
 
