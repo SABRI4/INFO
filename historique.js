@@ -133,39 +133,26 @@ function remplirFormulaireDepense(depenseId) {
 
 
 function modifierDepense(depenseId) {
-  // Récupérer les valeurs modifiées du formulaire de modification
-  let categorieModification = document.getElementById("categorieModification").value;
-  let montantModification = document.getElementById("montantModification").value;
-  let dateModification = document.getElementById("dateModification").value;
-  let descriptionModification = document.getElementById("descriptionModification").value;
-
-  let formData = new URLSearchParams();
+  const form = document.getElementById("formModification");
+  const formData = new FormData(form);
   formData.append('id', depenseId);
-  formData.append('categorie', categorieModification);
-  formData.append('montant', montantModification);
-  formData.append('date', dateModification);
-  formData.append('description', descriptionModification);
 
-  fetch('modifDepense.php', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: formData
+  fetch('modifierDepense.php', {
+      method: 'POST',
+      body: formData
   })
   .then(response => response.json())
   .then(data => {
-    if (data.success) {
-      alert("Dépense modifiée avec succès");
-      location.reload();  // Rafraîchir la page pour refléter les modifications
-    } else {
-      alert("Erreur lors de la modification de la dépense: " + data.message);
-    }
+      if (data.success) {
+          alert(data.message);
+          if (data.emailMessages) {
+              data.emailMessages.forEach(msg => alert(msg));
+          }
+      } else {
+          alert('Erreur : ' + data.message);
+      }
   })
-  .catch(error => {
-    console.error('Erreur lors de l’envoi de la requête:', error);
-    alert('Erreur lors de la modification de la dépense');
-  });
+  .catch(error => console.error('Erreur lors de la requête:', error));
 }
 
 
