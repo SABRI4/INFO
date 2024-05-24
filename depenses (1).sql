@@ -92,10 +92,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `photo`, `ACTIVE`, `VIP`, `budget`, `role`, `couleur`) VALUES
-(5, 'Younes', '$2y$10$bNeUZxKhzrFwjhp.oxKkA.TInzixEaF4i/4Bw3ybh/wpY.VZyCHBy', 'younesysabri@hotmail.fr', 'uploads/images.jpg', 0, 0, 150, 'user', '#0c1b8c'),
 (6, 'admin', '$2y$10$bNeUZxKhzrFwjhp.oxKkA.TInzixEaF4i/4Bw3ybh/wpY.VZyCHBy', 'admin@exemple.com', '', 1, 1, 0, 'admin', '#0c1b8c'),
-(8, 'sabri', '$2y$10$ILsnMZIf9DRCxJxdQ93w1.6rmOZE/PMb3ZKbgUXcmaw6FCq6UBrey', 'younesysabr53i@gmail.com', 'uploads/télécharger.jpg', 1, 0, 1000, 'user', '#8d570c'),
-(9, 'xpt', '$2y$10$UwpZO.PuGbGnSEpQTaAFI.GYCouFnilJ5Im64a8IJ4T1IHs7obdVe', 'younesysabri@gmail.com', 'uploads/avatar.jpg', 1, NULL, 200, 'user', '#0c1b8c');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
