@@ -19,6 +19,7 @@ $result = $conn->query($query);
     <meta charset="UTF-8">
     <title>Gérer Utilisateurs</title>
     <link rel="stylesheet" href="style.css">
+    <script src="couleur.js"></script>
 </head>
 <header>
     <div class="container">
