@@ -41,7 +41,7 @@
 
 <h1>Historique de vos dépenses :</h1>
 <label id="form" for="tri">Choisissez un ordre de tri :</label>
-<select class ="form" id="tri" onchange="trierDepenses()">
+<select id="form" id="tri" onchange="trierDepenses()">
   <option value="date">Date</option>
   <option value="montant">Montant</option>
   <option value="categorie">Catégorie</option>

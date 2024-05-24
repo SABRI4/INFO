@@ -23,4 +23,4 @@ echo $total_depenses ? $total_depenses : 0;
 
 $stmt->close();
 $conn->close();
-?>
+
