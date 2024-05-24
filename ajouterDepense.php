@@ -27,7 +27,7 @@ function calculerTotalDepenses($user_id, $conn) {
     }
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
     $categorie = $conn->real_escape_string($_POST['categorie']);
     $montant = $conn->real_escape_string($_POST['montant']);
@@ -121,8 +121,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
 
-
-        echo "Dépense ajoutée avec succès.";
+        echo "<p>Dépense ajoutée avec succès. Vous serez redirigé dans quelques secondes...</p>";
+        echo '<meta http-equiv="refresh" content="5;url=historique.php">';
+        exit();
     } else {
         echo "Erreur lors de l'ajout de la dépense : " . $stmt->error;
     }
