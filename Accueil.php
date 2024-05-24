@@ -1,10 +1,3 @@
-<?php
-session_start();
-if (!isset($_SESSION['user_id'])) {
-    header('Location: connexion.html');
-    exit();
-}
-?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -21,6 +14,7 @@ if (!isset($_SESSION['user_id'])) {
             <ul>
                 <li><a href="Accueil.php">Accueil</a></li>
                 <?php
+                session_start();
                 if (isset($_SESSION['user_id'])) {
                     echo '<li><a href="Ajout.php">Ajout Dépense</a></li><li><a href="Historique.php">Historique</a></li>';
                     if ($_SESSION['VIP'] == 1) {
@@ -84,16 +78,12 @@ if (!isset($_SESSION['user_id'])) {
     <h2>Nous Contacter</h2>
     <p>Nous sommes là pour vous aider ! Si vous avez des questions, des commentaires ou des suggestions, n'hésitez pas à nous contacter.</p>
     <ul>
-        <li>Email : contact@gestionnairededepenses.com</li>
+        <li>Email : comptedepense205@gmail.com</li>
         <li>Téléphone : +1 123 456 789</li>
         <li>Adresse : 123 rue de la Gestion, 75000 Paris, France</li>
     </ul>
     <p>Ou utilisez le formulaire ci-dessous :</p>
-    <form id="form" action="contact.php" method="post">
-        <label for="nom">Nom :</label>
-        <input type="text" id="nom" name="nom" required><br>
-        <label for="email">Email :</label>
-        <input type="email" id="email" name="email" required><br>
+    <form id="contactForm">
         <label for="message">Message :</label>
         <textarea id="message" name="message" rows="4" required></textarea><br>
         <button type="submit">Envoyer</button>
@@ -143,6 +133,29 @@ document.addEventListener("DOMContentLoaded", function() {
                 location.reload(); // Recharger la page pour mettre à jour l'affichage
             } else {
                 alert('Erreur : ' + data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Erreur lors de la requête:', error);
+            alert('Erreur lors de la requête');
+        });
+    });
+
+    // Ajouter un événement pour gérer le formulaire de contact
+    document.getElementById('contactForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const formData = new FormData(this);
+
+        fetch('contact.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+            } else {
+                alert('Erreur : ' + data.message);
             }
         })
         .catch(error => {
