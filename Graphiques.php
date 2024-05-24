@@ -22,13 +22,16 @@ if (!isset($_SESSION['user_id'])) {
             <ul>
                 <li><a href="Accueil.php">Accueil</a></li>
                 <?php
+                session_start();
                 if (isset($_SESSION['user_id'])) {
                     echo '<li><a href="Ajout.php">Ajout Dépense</a></li><li><a href="Historique.php">Historique</a></li>';
                     if ($_SESSION['VIP'] == 1) {
                         echo '<li><a href="Graphiques.php">Graphiques</a></li>';
                     }
-                    echo '<li><a href="logout.php">Déconnexion</a></li>';
+                    echo '<li><a href="centre_aide.php">Centre d'aide</a></li>';
                     echo '<li><a href="profil.php">Modifier Profil</a></li>';
+                    echo '<li><a href="logout.php">Déconnexion</a></li>';
+
 
                     // Vérifier si l'utilisateur est un administrateur
                     if ($_SESSION['role'] === 'admin') {
