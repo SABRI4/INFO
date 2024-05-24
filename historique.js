@@ -101,9 +101,9 @@ function remplirFormulaireDepense(depenseId) {
       formulaireModification.innerHTML = `
         <form id="formModification">
           <h2>Modifier la dépense :</h2>
-          <input type="hidden" id="depenseId" value="${depense[0].id}" />
+          <input type="hidden" id="depenseId" name="id" value="${depense[0].id}" />
           <label for="categorieModification">Catégorie :</label>
-          <select id="categorieModification" name="categorieModification" required>
+          <select id="categorieModification" name="categorie" required>
             <option value="alimentation" ${depense[0].categorie === 'alimentation' ? 'selected' : ''}>Alimentation</option>
             <option value="logement" ${depense[0].categorie === 'logement' ? 'selected' : ''}>Logement</option>
             <option value="transport" ${depense[0].categorie === 'transport' ? 'selected' : ''}>Transport</option>
@@ -115,11 +115,11 @@ function remplirFormulaireDepense(depenseId) {
             <option value="autres" ${depense[0].categorie === 'autres' ? 'selected' : ''}>Autres</option>
           </select><br>
           <label for="montantModification">Montant :</label>
-          <input type="number" id="montantModification" name="montantModification" value="${depense[0].montant}" step="0.01" min="0" required><br>
+          <input type="number" id="montantModification" name="montant" value="${depense[0].montant}" step="0.01" min="0" required><br>
           <label for="dateModification">Date :</label>
-          <input type="date" id="dateModification" name="dateModification" value="${depense[0].date}" required><br>
+          <input type="date" id="dateModification" name="date" value="${depense[0].date}" required><br>
           <label for="descriptionModification">Description :</label>
-          <textarea id="descriptionModification" name="descriptionModification" rows="4" cols="50" required>${depense[0].description}</textarea><br>
+          <textarea id="descriptionModification" name="description" rows="4" cols="50" required>${depense[0].description}</textarea><br>
           <button type="submit">Modifier</button>
         </form>`;
 
@@ -148,12 +148,16 @@ function modifierDepense(depenseId) {
           if (data.emailMessages) {
               data.emailMessages.forEach(msg => alert(msg));
           }
+          if (data.redirect) {
+              window.location.href = data.redirect; // Rediriger vers Historique.php
+          }
       } else {
           alert('Erreur : ' + data.message);
       }
   })
   .catch(error => console.error('Erreur lors de la requête:', error));
 }
+
 
 
 function supprimerDepense(depenseId) {
