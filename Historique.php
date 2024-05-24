@@ -61,7 +61,8 @@
     ?>
 </ul>
 <div id="formulaireModification">
-    <!-- Le formulaire de modification sera injecté ici par JavaScript -->
+
+ <!-- Le formulaire de modification sera injecté ici par JavaScript -->
 </div>
 
 <script>
