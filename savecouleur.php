@@ -2,8 +2,6 @@
 session_start();
 include_once 'connect.php';
 
-header('Content-Type: application/json');
-
 if (isset($_POST['couleur']) && isset($_SESSION['user_id'])) {
     $couleur = $_POST['couleur'];
     $userId = $_SESSION['user_id'];
@@ -22,4 +20,3 @@ if (isset($_POST['couleur']) && isset($_SESSION['user_id'])) {
     echo json_encode(array('success' => false, 'message' => 'Aucune couleur fournie ou utilisateur non connecté.'));
 }
 $conn->close();
-?>
