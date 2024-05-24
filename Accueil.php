@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestionnaire de dépenses</title>
     <link rel="stylesheet" href="style.css">
+    <script src="couleur.js"></script>
 </head>
 <body>
 <header>
@@ -90,7 +91,6 @@
     </form>
 </section>
 
-<script src="couleur.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     function getCurrentMonthYear() {
