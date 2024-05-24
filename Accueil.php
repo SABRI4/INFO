@@ -165,6 +165,31 @@ document.addEventListener("DOMContentLoaded", function() {
             alert('Erreur lors de la requête');
         });
     });
+
+    const form = document.getElementById("colorForm");
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+        const formData = new FormData(form);
+
+        fetch('savecouleur.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Recharger la page si la mise à jour est réussie
+                location.reload();
+            } else {
+                alert(data.message || 'Erreur lors de la mise à jour de la couleur.');
+            }
+        })
+        .catch(error => {
+            console.error('Erreur lors de la requête:', error);
+            alert('Erreur lors de la requête.');
+        });
+    });
+
 });
 </script>
 </body>
