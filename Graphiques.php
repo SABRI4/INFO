@@ -13,6 +13,7 @@ if (!isset($_SESSION['user_id'])) {
   <title>Graphiques</title>
   <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="couleur.js"></script>
 </head>
 <header>
     <div class="container">
