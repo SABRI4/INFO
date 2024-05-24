@@ -55,13 +55,12 @@ $conn->close();
             <ul>
                 <li><a href="Accueil.php">Accueil</a></li>
                 <?php
-                session_start();
                 if (isset($_SESSION['user_id'])) {
                     echo '<li><a href="Ajout.php">Ajout Dépense</a></li><li><a href="Historique.php">Historique</a></li>';
                     if ($_SESSION['VIP'] == 1) {
                         echo '<li><a href="Graphiques.php">Graphiques</a></li>';
                     }
-                    echo '<li><a href="centre_aide.php">Centre d'aide</a></li>';
+                    echo '<li><a href="centre_aide.php">Centre d aide</a></li>';
                     echo '<li><a href="profil.php">Modifier Profil</a></li>';
                     echo '<li><a href="logout.php">Déconnexion</a></li>';
 
@@ -144,5 +143,36 @@ $conn->close();
             <?php endif; ?>
         </div>
     </main>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    function getCurrentMonthYear() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth() + 1; // Les mois commencent à 0
+        return `${year}-${month.toString().padStart(2, '0')}`;
+    }
+
+    function updateTotalDepenses() {
+        fetch('total.php')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Réponse réseau non OK');
+                }
+                return response.text();
+            })
+            .then(data => {
+                const currentMonthYear = getCurrentMonthYear();
+                document.getElementById('totalDepenses').innerHTML = `Total Dépenses du mois de ${currentMonthYear}: ${data}`;
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération du total des dépenses:', error);
+            });
+    }
+
+  // Appeler updateTotalDepenses pour initialiser le total des dépenses au chargement de la page
+  updateTotalDepenses();
+});
+</script>    
 </body>
 </html>
