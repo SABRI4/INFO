@@ -16,12 +16,14 @@
                 <?php
                 session_start();
                 if (isset($_SESSION['user_id'])) {
-                    echo '<li><a href="Ajout.php">Ajout Dépense</a></li><li><a href="Historique.php">Historique</a></li>
-                    <li><a href="Graphiques.php">Graphiques</a></li>';
-                    echo '<li><a href="centre_aide.php">Centre Aide</a></li>';
-
+                    echo '<li><a href="Ajout.php">Ajout Dépense</a></li><li><a href="Historique.php">Historique</a></li>';
+                    if ($_SESSION['VIP'] == 1) {
+                        echo '<li><a href="Graphiques.php">Graphiques</a></li>';
+                    }
+                    echo '<li><a href="centre_aide.php">Centre d'aide</a></li>';
                     echo '<li><a href="profil.php">Modifier Profil</a></li>';
                     echo '<li><a href="logout.php">Déconnexion</a></li>';
+
 
                     // Vérifier si l'utilisateur est un administrateur
                     if ($_SESSION['role'] === 'admin') {
@@ -33,7 +35,14 @@
                     echo '<img src="' . $_SESSION['photo'] . '" alt="Photo de profil">';
                     echo '<span class="username">' . $_SESSION['username'] . '</span>';
                     echo '</li>';
-                    echo '<div id="totalDepenses"><h2> | Total Dépenses: 0 <h2></div>';
+                    echo '<div id="totalDepenses"><h2> | Total Dépenses: 0 </h2></div>';
+
+                    // Formulaire pour devenir VIP
+                    if ($_SESSION['VIP'] != 1) {
+                        echo '<form id="vipForm" action="become_vip.php" method="post">';
+                        echo '<button type="submit">Devenir VIP</button>';
+                        echo '</form>';
+                    }
                 } else {
                     echo '<li><a href="connexion.html">Connexion</a></li><li><a href="compte.html">Inscription</a></li>';
                 }
