@@ -33,7 +33,17 @@ h1 {
     margin: 20px;
 }
 
+#budgetForm {
+    margin:20px;
+}
 
+#colorForm {
+    margin: 20px;
+}
+
+#contactForm{
+    margin :20px;
+}
 nav {
     text-align: left;
     margin: 0px;
@@ -95,7 +105,7 @@ nav ul li a:hover {
 
 p {
     color: #555;
-    margin : 20px
+    margin : 20px;
 }
 
 label {
