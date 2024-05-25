@@ -94,7 +94,7 @@
 </section>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function(){
     function getCurrentMonthYear() {
         const now = new Date();
         const year = now.getFullYear();
@@ -175,14 +175,10 @@ document.addEventListener("DOMContentLoaded", function() {
             method: 'POST',
             body: formData
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Recharger la page si la mise à jour est réussie
-                location.reload();
-            } else {
-                alert(data.message || 'Erreur lors de la mise à jour de la couleur.');
-            }
+        .then(() => {
+            // Appliquer la nouvelle couleur directement
+            const newColor = formData.get('couleur');
+            document.documentElement.style.setProperty('--main-title-color', newColor);
         })
         .catch(error => {
             console.error('Erreur lors de la requête:', error);
