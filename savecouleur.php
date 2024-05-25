@@ -11,7 +11,7 @@ if (isset($_POST['couleur']) && isset($_SESSION['user_id'])) {
     $stmt->bind_param("si", $couleur, $userId);
 
     if ($stmt->execute()) {
-        echo json_encode(array('success' => true));
+        header("Location: Accueil.php"); 
     } else {
         echo json_encode(array('success' => false, 'message' => 'Erreur lors de la mise à jour de la couleur.'));
     }
