@@ -193,4 +193,4 @@ function rechercherDepenses(termeRecherche) {
     afficherResultatsRecherche(data);
   })
   .catch(error => console.error('Erreur lors de la recherche de dépenses:', error));
-}
+} 
