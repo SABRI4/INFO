@@ -39,6 +39,7 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Centre d'Aide</title>
     <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+    <script src="couleur.js"></script>
     <script>
         function showReplyForm(messageId) {
             var formId = 'replyForm_' + messageId;
