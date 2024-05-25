@@ -92,7 +92,7 @@ if (!isset($_SESSION['user_id'])) {
     <label for="mois">Mois :</label>
     <input type="month" id="mois" name="mois" required><br>
 
-    <button type="submit">Mettre à jour le budget</button>
+    <button type="submit">Mettre à jour</button>
   </form>
   <canvas id="graphiqueDepenses" width="400" height="400"></canvas>
   <script>
