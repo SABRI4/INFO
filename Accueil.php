@@ -187,6 +187,11 @@ document.addEventListener("DOMContentLoaded", function(){
                 // Appliquer la nouvelle couleur directement
                 const newColor = formData.get('couleur');
                 document.documentElement.style.setProperty('--main-title-color', newColor);
+                console.log('Couleur mise à jour:', newColor); // Message de débogage
+                // Mettre à jour la couleur des titres
+                document.querySelectorAll('h1, h2').forEach(element => {
+                    element.style.color = newColor;
+                });
             })
             .catch(error => {
                 console.error('Erreur lors de la requête:', error);
