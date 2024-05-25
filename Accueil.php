@@ -123,68 +123,77 @@ document.addEventListener("DOMContentLoaded", function(){
     updateTotalDepenses();
 
     // Ajouter un événement pour gérer le formulaire VIP
-    document.getElementById('vipForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        fetch('become_vip.php', {
-            method: 'POST'
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Vous êtes maintenant VIP!');
-                location.reload(); // Recharger la page pour mettre à jour l'affichage
-            } else {
-                alert('Erreur : ' + data.error);
-            }
-        })
-        .catch(error => {
-            console.error('Erreur lors de la requête:', error);
-            alert('Erreur lors de la requête');
+    const vipForm = document.getElementById('vipForm');
+    if (vipForm) {
+        vipForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            fetch('become_vip.php', {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Vous êtes maintenant VIP!');
+                    location.reload(); // Recharger la page pour mettre à jour l'affichage
+                } else {
+                    alert('Erreur : ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Erreur lors de la requête:', error);
+                alert('Erreur lors de la requête');
+            });
         });
-    });
+    }
 
     // Ajouter un événement pour gérer le formulaire de contact
-    document.getElementById('contactForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        const formData = new FormData(this);
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(contactForm);
 
-        fetch('contact.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert(data.message);
-            } else {
-                alert('Erreur : ' + data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Erreur lors de la requête:', error);
-            alert('Erreur lors de la requête');
+            fetch('contact.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                } else {
+                    alert('Erreur : ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Erreur lors de la requête:', error);
+                alert('Erreur lors de la requête');
+            });
         });
-    });
+    }
 
-    const form = document.getElementById("colorForm");
-    form.addEventListener("submit", function(event) {
-        event.preventDefault();
-        const formData = new FormData(form);
+    // Evenement pour gérer la couleur
+    const colorForm = document.getElementById("colorForm");
+    if (colorForm) {
+        colorForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+            const formData = new FormData(colorForm);
 
-        fetch('savecouleur.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(() => {
-            // Appliquer la nouvelle couleur directement
-            const newColor = formData.get('couleur');
-            document.documentElement.style.setProperty('--main-title-color', newColor);
-        })
-        .catch(error => {
-            console.error('Erreur lors de la requête:', error);
-            alert('Erreur lors de la requête.');
+            fetch('savecouleur.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(() => {
+                // Appliquer la nouvelle couleur directement
+                const newColor = formData.get('couleur');
+                document.documentElement.style.setProperty('--main-title-color', newColor);
+            })
+            .catch(error => {
+                console.error('Erreur lors de la requête:', error);
+                alert('Erreur lors de la requête.');
+            });
         });
-    });
+    }
 
 });
 </script>
