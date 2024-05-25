@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['user_id'])) {
         
         // Destinataires
         $mail->setFrom($email, $nom);
-        $mail->addAddress('contact@gestionnairededepenses.com'); // Adresse de destination
+        $mail->addAddress('comptedepense205@gmail.com'); // Adresse de destination
         
         // Contenu de l'email
         $mail->isHTML(false);
@@ -57,4 +57,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['user_id'])) {
 }
 
 echo json_encode($response);
-
