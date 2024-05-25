@@ -67,7 +67,7 @@ nav ul li:first-child {
 }
 
 nav ul li:last-child {
-    margin-left: auto; /* Fait pousser l'élément le plus à droite vers la droite */
+    margin-left: auto; 
 }
 nav ul li a {
     text-decoration: none;
@@ -179,7 +179,7 @@ h2 {
 .username {
     color: #d61aa7;
     font-weight: bold;
-    margin-right: 10px; /* Ajouter un espace entre le nom d'utilisateur et la photo */
+    margin-right: 10px;
 }
 
 .user-profile img {
@@ -194,7 +194,7 @@ h2 {
 
 .user-profile {
     display: flex;
-    align-items: center; /* Alignement vertical */
-    margin-left: auto; /* Déplacer l'ensemble vers la droite */
+    align-items: center;
+    margin-left: auto;
 }
 
