@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
-  fetch('getDepenses.php')  // Assurez-vous que cette URL est correcte
+  fetch('getDepenses.php')
   .then(response => {
     if (!response.ok) {
       throw new Error('Réponse réseau non OK');
@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function() {
   })
   .then(data => {
     let listeDepenses = document.getElementById("listeDepenses");
-    listeDepenses.innerHTML = ''; // Nettoie la liste avant d'ajouter de nouveaux éléments
+    listeDepenses.innerHTML = '';
     data.forEach(function(depense) {
       let nouvelleDepense = document.createElement("li");
       nouvelleDepense.textContent = `Catégorie: ${depense.categorie}, Montant: ${depense.montant}, Date: ${depense.date}, Description: ${depense.description}`;
@@ -18,18 +18,16 @@ document.addEventListener("DOMContentLoaded", function() {
       nouvelleDepense.setAttribute("data-date", depense.date);
       nouvelleDepense.setAttribute("data-description", depense.description);
 
-      // Ajouter un bouton "Modifier" pour chaque dépense
       let boutonModifier = document.createElement("button");
       boutonModifier.textContent = "Modifier";
       boutonModifier.addEventListener("click", function() {
-        remplirFormulaireDepense(depense.id); // Appeler la fonction pour remplir le formulaire
+        remplirFormulaireDepense(depense.id);
       });
 
-      // Ajouter un bouton "Supprimer" pour chaque dépense
       let boutonSupprimer = document.createElement("button");
       boutonSupprimer.textContent = "Supprimer";
       boutonSupprimer.addEventListener("click", function() {
-        supprimerDepense(depense.id); // Utiliser depense.id pour la suppression
+        supprimerDepense(depense.id);
       });
 
       nouvelleDepense.appendChild(boutonModifier);
@@ -45,7 +43,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
 function trierDepenses() {
   let critereTri = document.getElementById("tri").value;
+  if (!critereTri) {
+    console.error('Le critère de tri est null ou indéfini.');
+    return;
+  }
+
   let listeDepenses = document.getElementById("listeDepenses");
+  if (!listeDepenses) {
+    console.error('L\'élément listeDepenses est null ou indéfini.');
+    return;
+  }
+
   let depensesArray = Array.from(listeDepenses.children);
 
   depensesArray.sort(function(a, b) {
@@ -69,8 +77,6 @@ function trierDepenses() {
 document.getElementById("tri").addEventListener("change", function() {
   trierDepenses();
 });
-
-
 
 function remplirFormulaireDepense(depenseId) {
   fetch(`getDepenses.php?id=${depenseId}`)
@@ -97,7 +103,6 @@ function remplirFormulaireDepense(depenseId) {
         return;
       }
 
-      // Préremplir le formulaire avec les données de la dépense
       formulaireModification.innerHTML = `
         <form id="formModification">
           <h2>Modifier la dépense :</h2>
@@ -125,12 +130,11 @@ function remplirFormulaireDepense(depenseId) {
 
       document.getElementById("formModification").addEventListener("submit", function(event) {
         event.preventDefault();
-        modifierDepense(depenseId); // Modifier en utilisant l'ID
+        modifierDepense(depenseId);
       });
     })
     .catch(error => console.error('Erreur lors de la récupération des détails de la dépense:', error));
 }
-
 
 function modifierDepense(depenseId) {
   const form = document.getElementById("formModification");
@@ -149,7 +153,7 @@ function modifierDepense(depenseId) {
               data.emailMessages.forEach(msg => alert(msg));
           }
           if (data.redirect) {
-              window.location.href = data.redirect; // Rediriger vers Historique.php
+              window.location.href = data.redirect;
           }
       } else {
           alert('Erreur : ' + data.message);
@@ -157,8 +161,6 @@ function modifierDepense(depenseId) {
   })
   .catch(error => console.error('Erreur lors de la requête:', error));
 }
-
-
 
 function supprimerDepense(depenseId) {
   fetch('suppDepense.php', {
@@ -172,7 +174,7 @@ function supprimerDepense(depenseId) {
   .then(data => {
     if (data.success) {
       alert("Dépense supprimée avec succès");
-      document.querySelector(`li[data-id="${depenseId}"]`).remove(); // Assurez-vous que les éléments li ont un attribut data-id
+      document.querySelector(`li[data-id="${depenseId}"]`).remove();
     } else {
       alert("Erreur lors de la suppression de la dépense");
     }
@@ -189,7 +191,6 @@ function rechercherDepenses(termeRecherche) {
     return response.json();
   })
   .then(data => {
-    // Afficher les résultats de la recherche dans votre interface utilisateur
     afficherResultatsRecherche(data);
   })
   .catch(error => console.error('Erreur lors de la recherche de dépenses:', error));
