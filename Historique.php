@@ -26,20 +26,16 @@
                     echo '<li><a href="profil.php">Modifier Profil</a></li>';
                     echo '<li><a href="logout.php">Déconnexion</a></li>';
 
-
-                    // Vérifier si l'utilisateur est un administrateur
                     if ($_SESSION['role'] === 'admin') {
                         echo '<li><a href="manage_users.php">Gérer Utilisateurs</a></li>';
                     }
 
-                    // Afficher la photo de profil et le nom d'utilisateur
                     echo '<li class="user-profile">';
                     echo '<img src="' . $_SESSION['photo'] . '" alt="Photo de profil">';
                     echo '<span class="username">' . $_SESSION['username'] . '</span>';
                     echo '</li>';
                     echo '<div id="totalDepenses"><h2> | Total Dépenses: 0 </h2></div>';
 
-                    // Formulaire pour devenir VIP
                     if ($_SESSION['VIP'] != 1) {
                         echo '<form id="vipForm" action="become_vip.php" method="post">';
                         echo '<button type="submit">Devenir VIP</button>';
@@ -55,29 +51,24 @@
 </header>
 
 <h1>Historique de vos dépenses :</h1>
-<label id="form" for="tri">Choisissez un ordre de tri :</label>
-<select id="form" id="tri" onchange="trierDepenses()">
+<label for="tri">Choisissez un ordre de tri :</label>
+<select id="tri" onchange="trierDepenses()">
   <option value="date">Date</option>
   <option value="montant">Montant</option>
   <option value="categorie">Catégorie</option>
 </select>
 
-
-<form id="form" action="recherche.php" method="post">
+<form id="searchForm" action="recherche.php" method="post">
   <label for="search">Rechercher une dépense :</label>
   <input type="text" id="search" name="search">
   <button type="submit">Rechercher</button>
 </form>
 
 <ul id="listeDepenses">
-  <!-- Les dépenses seront affichées ici -->
-  <?php
-    include 'afficherDepense.php'; // Ce script charge les dépenses de la base de données et les affiche
-    ?>
+  <?php include 'afficherDepense.php'; ?>
 </ul>
-<div id="formulaireModification">
 
- <!-- Le formulaire de modification sera injecté ici par JavaScript -->
+<div id="formulaireModification">
 </div>
 
 <script>
@@ -85,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function() {
     function getCurrentMonthYear() {
         const now = new Date();
         const year = now.getFullYear();
-        const month = now.getMonth() + 1; // Les mois commencent à 0
+        const month = now.getMonth() + 1;
         return `${year}-${month.toString().padStart(2, '0')}`;
     }
 
@@ -106,8 +97,7 @@ document.addEventListener("DOMContentLoaded", function() {
             });
     }
 
-  // Appeler updateTotalDepenses pour initialiser le total des dépenses au chargement de la page
-  updateTotalDepenses();
+    updateTotalDepenses();
 });
 </script>
 
