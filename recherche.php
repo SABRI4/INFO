@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestionnaire de dépenses</title>
     <link rel="stylesheet" href="style.css">
+    <script src="couleur.js"></script>
+
 </head>
 
 <body>
@@ -22,7 +24,7 @@
                     if ($_SESSION['VIP'] == 1) {
                         echo '<li><a href="Graphiques.php">Graphiques</a></li>';
                     }
-                    echo '<li><a href="centre_aide.php">Centre d'aide</a></li>';
+                    echo '<li><a href="centre_aide.php">Centre d aide</a></li>';
                     echo '<li><a href="profil.php">Modifier Profil</a></li>';
                     echo '<li><a href="logout.php">Déconnexion</a></li>';
 
@@ -37,7 +39,7 @@
                     echo '<img src="' . $_SESSION['photo'] . '" alt="Photo de profil">';
                     echo '<span class="username">' . $_SESSION['username'] . '</span>';
                     echo '</li>';
-                    echo '<div id="totalDepenses"><h2> | Total Dépenses: 0 </h2></div>';
+                    echo '<div id="totalDepenses"></div>';
 
                     // Formulaire pour devenir VIP
                     if ($_SESSION['VIP'] != 1) {
@@ -53,7 +55,6 @@
         </nav>
     </div>
 </header>
-
 <?php
 include 'connect.php';
 
@@ -90,3 +91,112 @@ if (mysqli_num_rows($result) > 0) {
 // Fermez la connexion à la base de données
 mysqli_close($conn);
 ?>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+    function getCurrentMonthYear() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth() + 1; // Les mois commencent à 0
+        return `${year}-${month.toString().padStart(2, '0')}`;
+    }
+
+    function updateTotalDepenses() {
+        fetch('total.php')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Réponse réseau non OK');
+                }
+                return response.text();
+            })
+            .then(data => {
+                const currentMonthYear = getCurrentMonthYear();
+                document.getElementById('totalDepenses').innerHTML = `Total Dépenses du mois de ${currentMonthYear}: ${data}`;
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération du total des dépenses:', error);
+            });
+    }
+
+    // Appeler updateTotalDepenses pour initialiser le total des dépenses au chargement de la page
+    updateTotalDepenses();
+
+    // Ajouter un événement pour gérer le formulaire VIP
+    const vipForm = document.getElementById('vipForm');
+    if (vipForm) {
+        vipForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            fetch('become_vip.php', {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Vous êtes maintenant VIP!');
+                    location.reload(); // Recharger la page pour mettre à jour l'affichage
+                } else {
+                    alert('Erreur : ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Erreur lors de la requête:', error);
+                alert('Erreur lors de la requête');
+            });
+        });
+    }
+
+    // Ajouter un événement pour gérer le formulaire de contact
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(contactForm);
+
+            fetch('contact.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                } else {
+                    alert('Erreur : ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Erreur lors de la requête:', error);
+                alert('Erreur lors de la requête');
+            });
+        });
+    }
+
+    // Evenement pour gérer la couleur
+    const colorForm = document.getElementById("colorForm");
+    if (colorForm) {
+        colorForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+            const formData = new FormData(colorForm);
+
+            fetch('savecouleur.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(() => {
+                // Appliquer la nouvelle couleur directement
+                const newColor = formData.get('couleur');
+                document.documentElement.style.setProperty('--main-title-color', newColor);
+                console.log('Couleur mise à jour:', newColor); // Message de débogage
+                // Mettre à jour la couleur des titres
+                document.querySelectorAll('h1, h2').forEach(element => {
+                    element.style.color = newColor;
+                });
+            })
+            .catch(error => {
+                console.error('Erreur lors de la requête:', error);
+                alert('Erreur lors de la requête.');
+            });
+        });
+    }
+
+});
+</script>
